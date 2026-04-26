@@ -113,7 +113,7 @@ export function createGeminiModel() {
   }
   const genAI = new GoogleGenerativeAI(apiKey);
   return genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
+    model: "gemini-3-flash-preview",
     systemInstruction: buildSystemPrompt(),
     generationConfig: {
       maxOutputTokens: 1024,

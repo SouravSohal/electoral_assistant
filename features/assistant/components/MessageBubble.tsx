@@ -1,6 +1,8 @@
 import { AIBadge } from "@/components/shared/AIBadge";
 import { cn } from "@/lib/utils";
 import { User, BotMessageSquare } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface MessageBubbleProps {
   role: "user" | "model";
@@ -34,11 +36,36 @@ export function MessageBubble({ role, content }: MessageBubbleProps) {
             : "glass-panel border border-[hsla(210,20%,98%,0.05)] rounded-tl-sm w-full"
         )}>
           {!isUser && <AIBadge />}
+
           <div className={cn(
-            "text-[15px] leading-relaxed whitespace-pre-wrap",
+            "text-[15px] leading-relaxed prose prose-invert max-w-none",
             isUser ? "text-white" : "text-[hsla(210,20%,98%,0.85)]"
           )}>
-            {content}
+            {isUser ? (
+              <p className="whitespace-pre-wrap">{content}</p>
+            ) : (
+              <ReactMarkdown 
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  h3: ({node, ...props}) => <h3 className="text-lg font-bold text-white mt-6 mb-2 tracking-tight" {...props} />,
+                  p: ({node, ...props}) => <p className="mb-4 last:mb-0" {...props} />,
+                  ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-4 space-y-2" {...props} />,
+                  ol: ({node, ...props}) => <ol className="list-decimal pl-5 mb-4 space-y-2" {...props} />,
+                  li: ({node, ...props}) => <li className="pl-1" {...props} />,
+                  strong: ({node, ...props}) => <strong className="font-bold text-[var(--color-brand-saffron)]" {...props} />,
+                  a: ({node, ...props}) => (
+                    <a 
+                      className="text-[var(--color-brand-blue)] hover:underline font-medium underline-offset-4" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      {...props} 
+                    />
+                  ),
+                }}
+              >
+                {content}
+              </ReactMarkdown>
+            )}
             {!isUser && content === "" && (
               <span className="inline-block w-1.5 h-4 bg-[var(--color-brand-blue)] animate-pulse ml-1 align-middle rounded-full" />
             )}

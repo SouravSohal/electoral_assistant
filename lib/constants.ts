@@ -267,6 +267,108 @@ export const ELECTION_TIMELINE_STAGES: TimelineStage[] = [
   },
 ];
 
+// --- How to Vote Steps ---
+export const HOW_TO_VOTE_STEPS = [
+  {
+    id: "step-1-registration",
+    step: 1,
+    title: "Register to Vote",
+    titleHi: "मतदाता पंजीकरण",
+    description: "The first step to participating in democracy is ensuring your name is on the electoral roll.",
+    icon: "ClipboardCheck",
+    content: [
+      "Check your eligibility: You must be an Indian citizen, 18+ years old, and a resident of your constituency.",
+      "Apply online via Form 6 at voters.eci.gov.in or the Voter Helpline App.",
+      "Submit documents: Photo, Proof of Age (Aadhaar/10th Marksheet), and Proof of Residence.",
+      "Wait for verification by your Booth Level Officer (BLO).",
+    ],
+    officialLink: "https://voters.eci.gov.in",
+    aiPrompt: "How do I register to vote in India and what documents are needed?",
+  },
+  {
+    id: "step-2-verify",
+    step: 2,
+    title: "Verify Your Name",
+    titleHi: "अपने नाम की पुष्टि करें",
+    description: "Even if you have an EPIC card, your name must be in the current electoral roll to vote.",
+    icon: "Search",
+    content: [
+      "Visit the ECI Electoral Search portal at voters.eci.gov.in.",
+      "Search by Details (Name, DoB, State) or by EPIC Number.",
+      "Confirm your Polling Station and Part Number.",
+      "If your name is missing, file Form 6 immediately before the registration deadline.",
+    ],
+    officialLink: "https://voters.eci.gov.in/home/electoral-search",
+    aiPrompt: "How can I check if my name is in the voter list for the 2026 elections?",
+  },
+  {
+    id: "step-3-booth",
+    step: 3,
+    title: "Find Your Polling Booth",
+    titleHi: "अपने मतदान केंद्र को खोजें",
+    description: "Know exactly where to go on election day to avoid last-minute confusion.",
+    icon: "MapPin",
+    content: [
+      "Use the 'Know Your Polling Station' tool on the ECI portal.",
+      "Your Voter Information Slip (VIS) will also contain booth details and is usually distributed by BLOs.",
+      "Booth locations are typically nearby schools, community centers, or government buildings.",
+    ],
+    officialLink: "https://voters.eci.gov.in/home/booth-search",
+    aiPrompt: "How do I find my polling station for the Lok Sabha elections?",
+  },
+  {
+    id: "step-4-id",
+    step: 4,
+    title: "Carry Valid ID",
+    titleHi: "वैध पहचान पत्र साथ ले जाएं",
+    description: "You must prove your identity at the polling station using one of the ECI-approved documents.",
+    icon: "CreditCard",
+    content: [
+      "EPIC (Voter ID Card) is the primary document.",
+      "If you don't have EPIC, use any of these 12 alternatives: Aadhaar Card, PAN Card, MNREGA Job Card, Passbook with photo, Health Insurance Smart Card, Driving License, Passport, Pension document, Service ID (Govt/PSU), Official ID (MPs/MLAs), Unique Disability ID (UDID).",
+    ],
+    officialLink: "https://www.eci.gov.in",
+    aiPrompt: "Which IDs are accepted at the polling booth if I don't have a Voter ID card?",
+  },
+  {
+    id: "step-5-polling",
+    step: 5,
+    title: "Inside the Polling Booth",
+    titleHi: "मतदान केंद्र के भीतर",
+    description: "Follow the 4-step official process inside the booth to cast your vote.",
+    icon: "Vote",
+    content: [
+      "First Polling Officer: Checks your name in the voter list and ID document.",
+      "Second Polling Officer: Marks your finger with indelible ink, gives a slip, and takes your signature/thumbprint.",
+      "Third Polling Officer: Collects the slip and activates the EVM.",
+      "Voting Compartment: Press the blue button on the EVM next to your candidate's name/symbol. Verify the VVPAT slip (visible for 7 seconds).",
+    ],
+    officialLink: "https://www.eci.gov.in",
+    aiPrompt: "What is the step-by-step process inside an Indian polling booth?",
+  },
+  {
+    id: "step-6-ink",
+    step: 6,
+    title: "Post-Vote: Proudly Wear the Ink",
+    titleHi: "मतदान के बाद",
+    description: "Your part in the democratic process is complete once you cast your vote.",
+    icon: "Fingerprint",
+    content: [
+      "Ensure you have the indelible ink mark on your left forefinger.",
+      "Photography and mobile phones are strictly prohibited inside the voting compartment.",
+      "Collect any participation certificates if provided by your local booth.",
+    ],
+    officialLink: "https://www.eci.gov.in",
+    aiPrompt: "Why is indelible ink used in Indian elections and what is its history?",
+  },
+] as const;
+
+export const HOW_TO_VOTE_STEPS_METADATA = {
+  title: "Step-by-Step Voting Guide",
+  subtitle: "Everything you need to know from registration to the polling booth.",
+  tagline: "Your vote is your voice. Make it count.",
+};
+
 // --- Suggested AI Chat Questions ---
 export const SUGGESTED_QUESTIONS = [
   {

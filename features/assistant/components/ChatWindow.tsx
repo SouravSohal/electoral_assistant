@@ -35,7 +35,7 @@ export function ChatWindow({ initialQuestion }: { initialQuestion?: string }) {
   };
 
   return (
-    <div className="flex flex-col h-full w-full max-w-4xl mx-auto rounded-2xl overflow-hidden relative">
+    <div className="flex flex-col h-full w-full mx-auto glass-panel bg-[hsla(222,55%,15%,0.3)] border border-[hsla(210,20%,98%,0.08)] shadow-[0_8px_32px_hsla(222,65%,8%,0.5)] rounded-2xl overflow-hidden relative z-20">
       
       {/* Chat History Area */}
       <div 
@@ -43,7 +43,7 @@ export function ChatWindow({ initialQuestion }: { initialQuestion?: string }) {
         aria-live="polite"
       >
         {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center min-h-[50vh] mt-8">
+          <div className="flex flex-col items-center justify-center h-full mt-4">
             <h1 className="text-3xl sm:text-4xl font-display font-bold mb-3 text-center tracking-tight bg-gradient-to-r from-[var(--color-brand-blue)] via-[var(--color-brand-saffron)] to-[var(--color-brand-blue)] -webkit-background-clip-text text-transparent bg-clip-text bg-[length:200%_auto] animate-[gradientShift_8s_ease-in-out_infinite]">
               Civic AI Assistant
             </h1>
