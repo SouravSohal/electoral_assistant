@@ -11,10 +11,10 @@ export function SuggestedQuestions({ onSelect }: SuggestedQuestionsProps) {
       <div className="w-16 h-16 rounded-2xl bg-[hsla(215,85%,55%,0.1)] flex items-center justify-center mb-6 border border-[hsla(215,85%,55%,0.2)]">
         <MessageSquarePlus size={28} className="text-[var(--color-brand-blue)]" />
       </div>
-      <h2 className="text-xl font-display font-semibold text-white mb-2 text-center">
+      <h2 className="text-xl font-display font-semibold text-white mb-2 text-center tracking-tight">
         How can I help you vote today?
       </h2>
-      <p className="text-sm text-[var(--color-brand-muted)] mb-8 text-center max-w-md">
+      <p className="text-[15px] text-[var(--color-brand-muted)] mb-8 text-center max-w-md leading-relaxed">
         Select a question below or type your own to get instant, verified information based on official ECI guidelines.
       </p>
 

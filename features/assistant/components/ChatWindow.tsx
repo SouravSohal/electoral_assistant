@@ -44,7 +44,7 @@ export function ChatWindow({ initialQuestion }: { initialQuestion?: string }) {
       >
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[50vh] mt-8">
-            <h1 className="text-3xl sm:text-4xl font-display font-bold text-white mb-3 text-center tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-display font-bold mb-3 text-center tracking-tight bg-gradient-to-r from-[var(--color-brand-blue)] via-[var(--color-brand-saffron)] to-[var(--color-brand-blue)] -webkit-background-clip-text text-transparent bg-clip-text bg-[length:200%_auto] animate-[gradientShift_8s_ease-in-out_infinite]">
               Civic AI Assistant
             </h1>
             <p className="text-[15px] text-[var(--color-brand-muted)] max-w-md text-center mb-10 leading-relaxed">

@@ -36,7 +36,7 @@ export function MessageBubble({ role, content }: MessageBubbleProps) {
           {!isUser && <AIBadge />}
           <div className={cn(
             "text-[15px] leading-relaxed whitespace-pre-wrap",
-            isUser ? "text-white" : "text-[var(--color-brand-white)]"
+            isUser ? "text-white" : "text-[hsla(210,20%,98%,0.85)]"
           )}>
             {content}
             {!isUser && content === "" && (
