@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+/* === TAILWIND V4 THEME CONFIGURATION === */
+@theme {
+  /* Color Palette */
+  --color-brand-navy: hsl(222, 65%, 7%);
+  --color-brand-surface: hsl(222, 65%, 11%);
+  --color-brand-elevated: hsl(222, 55%, 15%);
+  --color-brand-blue: hsl(215, 85%, 55%);
+  --color-brand-saffron: hsl(28, 100%, 55%);
+  --color-brand-green: hsl(135, 60%, 45%);
+  
+  --color-brand-white: hsl(210, 20%, 98%);
+  --color-brand-muted: hsl(220, 15%, 65%);
+
+  /* Typography */
+  --font-display: var(--font-display), "Outfit", system-ui, sans-serif;
+  --font-sans: var(--font-sans), "Inter", system-ui, sans-serif;
+
+  /* Animations */
+  --animate-fade-in-up: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;
+}
+
+/* === BASE RESET === */
+@layer base {
+  body {
+    background-color: var(--color-brand-navy);
+    color: var(--color-brand-white);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* === UTILITIES & COMPONENT CLASSES === */
+@layer components {
+  /* Layout */
+  .container-max {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .container-max { padding: 0 3rem; }
+  }
+
+  /* Typography Scales */
+  .text-display {
+    font-size: clamp(3rem, 5vw + 1rem, 5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    font-family: var(--font-display);
+  }
+  
+  .text-headline {
+    font-size: clamp(2rem, 4vw + 0.5rem, 3.25rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+    font-family: var(--font-display);
+  }
+  
+  .text-subheadline {
+    font-size: clamp(1.125rem, 2vw + 0.25rem, 1.35rem);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  /* Glassmorphism */
+  .glass-panel {
+    background: hsla(222, 55%, 15%, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid hsla(210, 20%, 98%, 0.08);
+  }
+
+  /* Focus Rings (Accessibility) */
+  .focus-ring {
+    outline: none;
+  }
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--color-brand-saffron);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+}
+
+/* === KEYFRAMES === */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
