@@ -78,10 +78,6 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {/* Skip Navigation — First focusable element for keyboard/screen-reader users */}
-        <a href="#main-content" className="skip-nav">
-          Skip to main content
-        </a>
 
         {/* Main content — Navbar and Footer are rendered inside each page/layout */}
         <div id="main-content" tabIndex={-1}>
