@@ -3,15 +3,20 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Vote, Menu, X, Sparkles } from "lucide-react";
+import { Vote, Menu, X, Sparkles, LogIn, LogOut, User as UserIcon, ChevronDown } from "lucide-react";
 import { APP_NAME, NAV_ITEMS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
   const menuRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -86,8 +91,57 @@ export function Navbar() {
             })}
           </ul>
 
-          {/* ── DESKTOP CTA ─────────────────────────────────────── */}
-          <div className="hidden lg:flex items-center shrink-0">
+          {/* ── DESKTOP ACTIONS ─────────────────────────────────────── */}
+          <div className="hidden lg:flex items-center gap-4 shrink-0">
+            <LanguageSwitcher />
+
+            <div className="h-6 w-px bg-[hsla(210,20%,98%,0.1)] mx-1" />
+
+            {user ? (
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-[hsla(210,20%,98%,0.03)] border border-[hsla(210,20%,98%,0.05)] hover:border-[hsla(215,85%,55%,0.3)] transition-all"
+                >
+                  {user.photoURL ? (
+                    <img src={user.photoURL} alt="" className="w-8 h-8 rounded-full border border-[hsla(210,20%,98%,0.1)]" />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-[var(--color-brand-blue)] flex items-center justify-center text-white font-bold">
+                      {user.displayName?.[0] || user.email?.[0] || "U"}
+                    </div>
+                  )}
+                  <ChevronDown size={14} className={cn("text-[var(--color-brand-gray-500)] transition-transform", userMenuOpen && "rotate-180")} />
+                </button>
+
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 glass-panel border border-[hsla(210,20%,98%,0.1)] p-2 z-50 animate-[fade-in_0.2s_ease-out]">
+                    <div className="px-3 py-2 border-b border-[hsla(210,20%,98%,0.05)] mb-1">
+                      <p className="text-xs font-bold text-white truncate">{user.displayName || "Citizen"}</p>
+                      <p className="text-[10px] text-[var(--color-brand-gray-500)] truncate">{user.email}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setUserMenuOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-[hsla(0,100%,50%,0.05)] transition-all"
+                    >
+                      <LogOut size={16} />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="focus-ring group flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-white bg-[hsla(210,20%,98%,0.05)] hover:bg-[hsla(210,20%,98%,0.1)] border border-[hsla(210,20%,98%,0.1)] rounded-full transition-all duration-200"
+              >
+                <LogIn size={16} />
+                <span>Sign In</span>
+              </Link>
+            )}
+
             <Link
               href="/assistant"
               className="focus-ring group flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-white bg-[var(--color-brand-blue)] rounded-full transition-all duration-200 hover:bg-[hsla(215,85%,60%,1)] shadow-sm hover:shadow-[0_4px_12px_hsla(215,85%,55%,0.2)] hover:-translate-y-[1px]"

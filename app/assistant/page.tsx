@@ -27,7 +27,7 @@ export default async function AssistantPage({ searchParams }: Props) {
       </div>
       
       {/* Main Chat Area */}
-      <main className="flex-1 flex flex-col items-center justify-center w-full px-4 sm:px-6 pt-24 pb-6 md:pt-28 md:pb-8 z-10 overflow-hidden min-h-0">
+      <main className="flex-1 flex flex-col items-center justify-center w-full px-4 sm:px-6 pt-[120px] pb-6 md:pt-[130px] md:pb-8 z-10 overflow-hidden min-h-0">
         <div className="w-full h-full max-w-5xl mx-auto flex flex-col min-h-0 overflow-hidden">
           <ChatWindow initialQuestion={initialQuestion} />
         </div>

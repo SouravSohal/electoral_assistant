@@ -12,7 +12,7 @@ export default function TimelinePage() {
     <div className="min-h-screen flex flex-col selection:bg-[var(--color-brand-saffron)] selection:text-[var(--color-brand-navy)]">
       <Navbar />
       
-      <main className="flex-1 container-max py-12 md:py-20 relative overflow-hidden">
+      <main className="flex-1 container-max pt-[120px] pb-12 md:pb-20 relative overflow-hidden">
         {/* Ambient background glows */}
         <div className="absolute top-20 right-0 w-[500px] h-[500px] rounded-full bg-[var(--color-brand-blue)] opacity-[0.05] blur-[100px] pointer-events-none" />
         <div className="absolute top-[40%] left-0 w-[400px] h-[400px] rounded-full bg-[var(--color-brand-saffron)] opacity-[0.03] blur-[100px] pointer-events-none" />

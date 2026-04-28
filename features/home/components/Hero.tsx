@@ -3,7 +3,7 @@ import { ArrowRight, MapPin, ChevronRight, BotMessageSquare } from "lucide-react
 
 export function Hero() {
   return (
-    <section className="relative min-h-[calc(100vh-80px)] flex flex-col items-center justify-center pt-24 pb-12 overflow-hidden">
+    <section className="relative min-h-[calc(100vh-80px)] flex flex-col items-center justify-center pt-[120px] pb-12 overflow-hidden">
       {/* Background Ambience (Soft, non-intimidating) */}
       <div 
         className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-[var(--color-brand-blue)] opacity-10 blur-[100px] pointer-events-none"

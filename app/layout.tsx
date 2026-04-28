@@ -77,7 +77,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>
+      <body suppressHydrationWarning>
 
         {/* Main content — Navbar and Footer are rendered inside each page/layout */}
         <div id="main-content" tabIndex={-1}>

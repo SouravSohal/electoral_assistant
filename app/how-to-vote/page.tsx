@@ -17,7 +17,7 @@ export default function HowToVotePage() {
     <div className="min-h-screen flex flex-col selection:bg-[var(--color-brand-saffron)] selection:text-[var(--color-brand-navy)] bg-[var(--color-brand-navy)]">
       <Navbar />
 
-      <main className="flex-1 pt-24 pb-20">
+      <main className="flex-1 pt-[120px] pb-20">
         {/* Hero Section */}
         <div className="relative overflow-hidden mb-16 py-12 md:py-20">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[400px] bg-[var(--color-brand-blue)] opacity-[0.05] blur-[120px] pointer-events-none" />

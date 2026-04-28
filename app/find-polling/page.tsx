@@ -18,7 +18,7 @@ export default function PollingFinderPage() {
     <div className="min-h-screen flex flex-col selection:bg-[var(--color-brand-saffron)] selection:text-[var(--color-brand-navy)] bg-[var(--color-brand-navy)]">
       <Navbar />
 
-      <main className="flex-1 pt-24 pb-20">
+      <main className="flex-1 pt-[120px] pb-20">
         <div className="container-max px-4">
           <header className="max-w-3xl mb-12 animate-[fade-in-up_0.5s_ease-out]">
             <h1 className="text-display md:text-5xl font-black mb-4 tracking-tight">
