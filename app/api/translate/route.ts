@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 const TranslationRequestSchema = z.object({
-  text: z.string().min(1, "Text is required"),
+  texts: z.array(z.string()).min(1, "At least one text is required"),
   targetLanguage: z.string().length(2, "Invalid language code"),
 });
 
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { text, targetLanguage } = validation.data;
+    const { texts, targetLanguage } = validation.data;
     const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY;
 
     if (!apiKey) {
@@ -29,13 +29,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. Call Google Cloud Translation API
+    // Google Cloud Translation v2 API allows 'q' to be an array of strings
     const response = await fetch(
       `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
       {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
-          q: text,
+          q: texts,
           target: targetLanguage,
           format: "text",
         }),
@@ -52,9 +55,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 3. Return translated text
+    // 3. Return translated text array
     return NextResponse.json({
-      translatedText: data.data.translations[0].translatedText,
+      translatedTexts: data.data.translations.map((t: any) => t.translatedText),
     });
 
   } catch (error) {

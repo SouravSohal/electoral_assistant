@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -78,6 +79,21 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
+        <div id="google_translate_element" className="hidden" />
+        <Script
+          src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+          strategy="afterInteractive"
+        />
+        <Script id="google-translate-init" strategy="afterInteractive">
+          {`
+            function googleTranslateElementInit() {
+              new window.google.translate.TranslateElement({
+                pageLanguage: 'en',
+                autoDisplay: false,
+              }, 'google_translate_element');
+            }
+          `}
+        </Script>
 
         {/* Main content — Navbar and Footer are rendered inside each page/layout */}
         <div id="main-content" tabIndex={-1}>
