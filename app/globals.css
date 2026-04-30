@@ -106,3 +106,45 @@
   0%, 100% { opacity: 0.4; transform: scale(1); }
   50% { opacity: 0.8; transform: scale(1.05); }
 }
+
+/* === ACCESSIBILITY MODES === */
+
+/* Font Scaling */
+html.a11y-font-lg { font-size: 115%; }
+html.a11y-font-xl { font-size: 130%; }
+
+/* High Contrast Mode */
+html.a11y-high-contrast {
+  --color-brand-navy: #000000;
+  --color-brand-surface: #000000;
+  --color-brand-elevated: #111111;
+  --color-brand-blue: #00ffff; /* Cyan for visibility */
+  --color-brand-saffron: #ffff00; /* Bright Yellow */
+  --color-brand-white: #ffffff;
+  --color-brand-muted: #cccccc;
+}
+
+html.a11y-high-contrast .glass-panel {
+  background: #000000;
+  border: 2px solid #ffffff;
+  backdrop-filter: none;
+}
+
+/* High contrast overrides for specific utility classes can be added here using standard selectors if needed */
+
+/* Dyslexic Friendly Typography */
+html.a11y-dyslexic {
+  --font-sans: "Comic Sans MS", "Arial", sans-serif; /* Clean alternatives if OpenDyslexic is unavailable */
+  --font-display: "Comic Sans MS", "Arial", sans-serif;
+}
+
+html.a11y-dyslexic * {
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.1em !important;
+  line-height: 1.6 !important;
+}
+
+/* Base Transition for Smooth Mode Switching */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease, font-size 0.3s ease;
+}

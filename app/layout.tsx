@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
+import { AccessibilityToolbar } from "@/components/shared/AccessibilityToolbar";
 
 export const metadata: Metadata = {
   title: {
@@ -117,6 +118,8 @@ export default function RootLayout({
           className="sr-only"
           role="alert"
         />
+
+        <AccessibilityToolbar />
       </body>
     </html>
   );
