@@ -17,6 +17,10 @@ import {
   clearIndexedDbPersistence,
   disableNetwork,
   enableNetwork,
+  deleteDoc,
+  collection,
+  getDocs,
+  query,
   type Firestore 
 } from "firebase/firestore";
 import { UserProfile } from "./schemas";
@@ -121,6 +125,34 @@ export async function updateUserProfile(uid: string, profile: Partial<UserProfil
       updatedAt: Date.now(),
     });
   }
+}
+
+/**
+ * Election Reminders
+ */
+export async function toggleElectionReminder(uid: string, eventId: string, eventTitle: string, date: string): Promise<boolean> {
+  const db = getFirebaseDb();
+  const reminderRef = doc(db, "users", uid, "reminders", eventId);
+  const snap = await getDoc(reminderRef);
+  
+  if (snap.exists()) {
+    await deleteDoc(reminderRef);
+    return false; // Removed
+  } else {
+    await setDoc(reminderRef, {
+      eventTitle,
+      date,
+      createdAt: Date.now()
+    });
+    return true; // Added
+  }
+}
+
+export async function getElectionReminders(uid: string): Promise<string[]> {
+  const db = getFirebaseDb();
+  const remindersRef = collection(db, "users", uid, "reminders");
+  const snap = await getDocs(query(remindersRef));
+  return snap.docs.map(doc => doc.id);
 }
 
 export { getFirebaseApp };

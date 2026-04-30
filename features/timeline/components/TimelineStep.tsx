@@ -1,13 +1,55 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { TimelineStage } from "@/lib/constants";
 import { DynamicIcon } from "@/components/shared/DynamicIcon";
-import { ExternalLink, BotMessageSquare, ChevronDown, CheckCircle2, Lightbulb } from "lucide-react";
+import { 
+  ExternalLink, 
+  BotMessageSquare, 
+  ChevronDown, 
+  CheckCircle2, 
+  Lightbulb,
+  Bell,
+  BellRing,
+  Loader2
+} from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { toggleElectionReminder } from "@/lib/firebase";
+import { cn } from "@/lib/utils";
 
 interface TimelineStepProps {
   stage: TimelineStage;
+  isReminderSet?: boolean;
 }
 
-export function TimelineStep({ stage }: TimelineStepProps) {
+export function TimelineStep({ stage, isReminderSet: initialReminderSet }: TimelineStepProps) {
+  const { user } = useAuth();
+  const [isReminderSet, setIsReminderSet] = useState(initialReminderSet);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const handleToggleReminder = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!user) {
+      alert("Please log in to set reminders.");
+      return;
+    }
+
+    setIsUpdating(true);
+    try {
+      const added = await toggleElectionReminder(
+        user.uid, 
+        stage.id, 
+        stage.title, 
+        stage.duration
+      );
+      setIsReminderSet(added);
+    } catch (err) {
+      console.error("Reminder Error:", err);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
   return (
     <div className="relative pl-8 md:pl-12 group mb-10 last:mb-0">
       
@@ -98,8 +140,48 @@ export function TimelineStep({ stage }: TimelineStepProps) {
               className="focus-ring flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 text-sm font-medium text-white bg-[hsla(215,85%,55%,0.1)] border border-[hsla(215,85%,55%,0.3)] rounded-full transition-colors hover:bg-[hsla(215,85%,55%,0.2)]"
             >
               <BotMessageSquare size={16} />
-              Ask AI about this
+              Ask AI
             </Link>
+
+            {stage.id === "polling-day" && (
+              <Link
+                href="/ballot"
+                className="focus-ring flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 text-sm font-medium text-[var(--color-brand-navy)] bg-[var(--color-brand-saffron)] rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg shadow-[hsla(28,100%,55%,0.2)]"
+              >
+                <Tablet size={16} />
+                Try EVM Mockup
+              </Link>
+            )}
+
+            <div className="relative w-full sm:w-auto">
+              <button
+                onClick={handleToggleReminder}
+                disabled={isUpdating}
+                aria-pressed={isReminderSet}
+                aria-busy={isUpdating}
+                aria-label={isReminderSet ? `Remove reminder for ${stage.title}` : `Set reminder for ${stage.title}`}
+                className={cn(
+                  "focus-ring flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 text-sm font-medium rounded-full transition-all duration-300",
+                  isReminderSet 
+                    ? "bg-[hsla(28,92%,58%,0.15)] text-[var(--color-brand-saffron)] border border-[hsla(28,92%,58%,0.4)]" 
+                    : "text-[var(--color-brand-gray-300)] bg-[hsla(210,20%,98%,0.03)] border border-[hsla(210,20%,98%,0.1)] hover:border-[hsla(28,92%,58%,0.3)] hover:text-[var(--color-brand-saffron)]"
+                )}
+              >
+                {isUpdating ? (
+                  <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+                ) : isReminderSet ? (
+                  <BellRing size={16} aria-hidden="true" />
+                ) : (
+                  <Bell size={16} aria-hidden="true" />
+                )}
+                {isReminderSet ? "Reminder Set" : "Remind Me"}
+              </button>
+              
+              {/* Hidden live region for status updates */}
+              <div className="sr-only" role="status" aria-live="polite">
+                {isUpdating ? "Updating reminder..." : isReminderSet ? "Reminder saved successfully." : "Reminder removed."}
+              </div>
+            </div>
             
             {stage.officialLink && (
               <a

@@ -415,6 +415,7 @@ export const NAV_ITEMS = [
   { href: "/assistant", label: "AI Assistant", id: "nav-assistant" },
   { href: "/timeline", label: "Election Timeline", id: "nav-timeline" },
   { href: "/find-polling", label: "Find Polling Booth", id: "nav-polling" },
+  { href: "/ballot", label: "Ballot Preview", id: "nav-ballot" },
   { href: "/how-to-vote", label: "How to Vote", id: "nav-how-to-vote" },
 ] as const;
 
@@ -455,10 +456,11 @@ export const FEATURES = [
   {
     id: "feature-evm",
     icon: "Tablet",
-    title: "EVM & VVPAT Guide",
+    title: "Interactive EVM Preview",
     description:
-      "Understand how Electronic Voting Machines and VVPAT work, and learn about the NOTA option available on every EVM.",
+      "Practice voting on a digital mockup of the Electronic Voting Machine (EVM) and learn how the VVPAT system confirms your vote.",
     color: "blue",
+    href: "/ballot",
   },
   {
     id: "feature-accessible",
