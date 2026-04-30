@@ -5,7 +5,15 @@
  */
 import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
-import { getFirestore, type Firestore } from "firebase/firestore";
+import { 
+  getFirestore, 
+  doc, 
+  getDoc, 
+  setDoc, 
+  updateDoc,
+  type Firestore 
+} from "firebase/firestore";
+import { UserProfile } from "./schemas";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -54,6 +62,38 @@ export function getFirebaseDb(): Firestore {
     db = getFirestore(getFirebaseApp());
   }
   return db;
+}
+
+/**
+ * Firestore Helpers for User Profiles
+ */
+export async function getUserProfile(uid: string): Promise<UserProfile | null> {
+  const db = getFirebaseDb();
+  const docRef = doc(db, "users", uid);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data() as UserProfile;
+  }
+  return null;
+}
+
+export async function updateUserProfile(uid: string, profile: Partial<UserProfile>): Promise<void> {
+  const db = getFirebaseDb();
+  const docRef = doc(db, "users", uid);
+  
+  // Try updating first, if doesn't exist, set it
+  try {
+    await updateDoc(docRef, {
+      ...profile,
+      updatedAt: Date.now(),
+    });
+  } catch (e) {
+    await setDoc(docRef, {
+      ...profile,
+      updatedAt: Date.now(),
+    });
+  }
 }
 
 export { getFirebaseApp };

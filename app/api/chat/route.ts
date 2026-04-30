@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: "Invalid JSON in request body." }, { status: 400 });
     }
 
-    const { messages } = ChatRequestSchema.parse(body);
+    const { messages, profile } = ChatRequestSchema.parse(body);
 
     // 2. Sanitize the last user message
     const lastMessage = messages[messages.length - 1];
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     }));
 
     // 4. Create Gemini model and start chat
-    const model = createGeminiModel();
+    const model = createGeminiModel(profile);
     const chat = model.startChat({ history });
 
     // 5. Stream the response

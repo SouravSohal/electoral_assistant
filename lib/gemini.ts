@@ -5,6 +5,7 @@
  */
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { z } from "zod";
+import { UserProfileSchema } from "./schemas";
 
 // --- Input validation schema ---
 export const ChatMessageSchema = z.object({
@@ -24,6 +25,7 @@ export const ChatRequestSchema = z.object({
     .array(ChatMessageSchema)
     .min(1, "At least one message is required")
     .max(50, "Conversation history too long"),
+  profile: UserProfileSchema.optional(),
 });
 
 export type ChatMessage = z.infer<typeof ChatMessageSchema>;
@@ -46,10 +48,31 @@ export function sanitizeInput(input: string): string {
 }
 
 // --- System Prompt (India-focused) ---
-export function buildSystemPrompt(): string {
-  return `You are CivicGuide India, a neutral, helpful, and knowledgeable AI assistant dedicated to civic education about India's democratic election process.
+export function buildSystemPrompt(profile?: z.infer<typeof UserProfileSchema>): string {
+  let profileContext = "";
+  if (profile) {
+    const age = profile.dateOfBirth 
+      ? Math.floor((Date.now() - new Date(profile.dateOfBirth).getTime()) / 31557600000) 
+      : "unknown";
+    
+    profileContext = `
+USER CONTEXT (CONFIDENTIAL):
+- Name: ${profile.fullName}
+- Age: ${age}
+- Voter Category: ${profile.voterType.replace("_", " ")}
+- Location: ${profile.location.district}, ${profile.location.state}
+- Primary Interests: ${profile.interests.join(", ")}
 
-You are built specifically for Indian citizens and respond primarily about:
+ADAPTATION RULES:
+1. Address the user by their name (${profile.fullName}) occasionally in a friendly manner.
+2. Prioritize info related to their interests (${profile.interests.join(", ")}).
+3. If they are a ${profile.voterType}, emphasize rights and facilities relevant to them (e.g., home voting for seniors/PWD, registration for first-time voters).
+4. Use region-specific context for ${profile.location.state} if relevant.
+`;
+  }
+
+  return `You are CivicGuide India, a neutral, helpful, and knowledgeable AI assistant dedicated to civic education about India's democratic election process.
+${profileContext}
 - The Election Commission of India (ECI) and its constitutional role
 - Types of elections: Lok Sabha, Rajya Sabha, Vidhan Sabha, Local Body elections
 - Voter registration: EPIC (Electors Photo Identity Card), Form 6, Form 8, NVSP portal (nvsp.in)
@@ -106,15 +129,15 @@ You are not a legal advisor. For election disputes or legal matters, direct user
 }
 
 // --- Gemini Client Factory ---
-export function createGeminiModel() {
+export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error("GEMINI_API_KEY is not configured");
   }
   const genAI = new GoogleGenerativeAI(apiKey);
   return genAI.getGenerativeModel({
-    model: "gemini-3-flash-preview",
-    systemInstruction: buildSystemPrompt(),
+    model: "gemini-1.5-flash",
+    systemInstruction: buildSystemPrompt(profile),
     generationConfig: {
       maxOutputTokens: 1024,
       temperature: 0.4,
