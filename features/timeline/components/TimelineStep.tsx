@@ -12,7 +12,8 @@ import {
   Lightbulb,
   Bell,
   BellRing,
-  Loader2
+  Loader2,
+  Tablet
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toggleElectionReminder } from "@/lib/firebase";
