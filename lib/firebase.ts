@@ -16,6 +16,20 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+// Check for missing config in development
+if (process.env.NODE_ENV === "development") {
+  const missingKeys = Object.entries(firebaseConfig)
+    .filter(([_, value]) => !value)
+    .map(([key]) => key);
+
+  if (missingKeys.length > 0) {
+    console.warn(
+      `Firebase config is missing keys: ${missingKeys.join(", ")}. ` +
+      "Ensure your .env.local is correctly populated and you have restarted the dev server."
+    );
+  }
+}
+
 // Singleton pattern — prevent re-initialization in hot-reload
 let app: FirebaseApp;
 let auth: Auth;

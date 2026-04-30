@@ -10,7 +10,7 @@ import {
 import { getFirebaseAuth } from "@/lib/firebase";
 import { Navbar } from "@/components/shared/Navbar";
 import { Footer } from "@/components/shared/Footer";
-import { LogIn, Loader2, ShieldCheck, Star } from "lucide-react";
+import { DynamicIcon } from "@/components/shared/DynamicIcon";
 import { cn } from "@/lib/utils";
 
 export default function LoginPage() {
@@ -53,7 +53,7 @@ export default function LoginPage() {
   if (checkingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--color-brand-navy)]">
-        <Loader2 className="text-[var(--color-brand-blue)] animate-spin" size={40} />
+        <DynamicIcon name="Loader2" className="text-[var(--color-brand-blue)] animate-spin" size={40} />
       </div>
     );
   }
@@ -70,7 +70,7 @@ export default function LoginPage() {
         <div className="w-full max-w-md animate-[fade-in-up_0.6s_ease-out]">
           <div className="glass-panel p-8 md:p-12 text-center relative">
             <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-2xl bg-[var(--color-brand-blue)] flex items-center justify-center shadow-xl shadow-blue-500/20">
-              <ShieldCheck className="text-white" size={24} />
+              <DynamicIcon name="ShieldCheck" className="text-white" size={24} />
             </div>
 
             <h1 className="text-3xl font-black mb-2 tracking-tight mt-4">Welcome Back</h1>
@@ -84,7 +84,7 @@ export default function LoginPage() {
               className="w-full btn-ghost py-4 flex items-center justify-center gap-4 hover:bg-[hsla(215,85%,55%,0.05)] border-[hsla(210,20%,98%,0.1)] transition-all active:scale-[0.98]"
             >
               {loading ? (
-                <Loader2 size={20} className="animate-spin" />
+                <DynamicIcon name="Loader2" size={20} className="animate-spin" />
               ) : (
                 <svg width="20" height="20" viewBox="0 0 24 24">
                   <path
@@ -111,7 +111,7 @@ export default function LoginPage() {
             <div className="mt-10 pt-8 border-t border-[hsla(210,20%,98%,0.05)] space-y-4">
               <div className="flex items-center gap-3 text-left">
                 <div className="w-8 h-8 rounded-lg bg-[hsla(215,85%,55%,0.05)] flex items-center justify-center text-[var(--color-brand-blue)]">
-                  <Star size={16} />
+                  <DynamicIcon name="Star" size={16} />
                 </div>
                 <p className="text-xs text-[var(--color-brand-gray-500)]">
                   Save your designated polling station.
@@ -119,7 +119,7 @@ export default function LoginPage() {
               </div>
               <div className="flex items-center gap-3 text-left">
                 <div className="w-8 h-8 rounded-lg bg-[hsla(215,85%,55%,0.05)] flex items-center justify-center text-[var(--color-brand-blue)]">
-                  <Star size={16} />
+                  <DynamicIcon name="Star" size={16} />
                 </div>
                 <p className="text-xs text-[var(--color-brand-gray-500)]">
                   Get notified when voter registration opens.
