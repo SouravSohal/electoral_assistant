@@ -93,19 +93,26 @@ export function ProfileOnboarding({ user, onComplete }: ProfileOnboardingProps) 
       const profileData = {
         ...formData,
         onboardingCompleted: true,
+        updatedAt: Date.now(),
       } as UserProfile;
 
       // Validate with Zod
-      UserProfileSchema.parse(profileData);
+      console.log("Validating profile data:", profileData);
+      const result = UserProfileSchema.safeParse(profileData);
+      
+      if (!result.success) {
+        const firstError = result.error.errors[0].message;
+        setError(firstError);
+        console.error("Validation failed:", result.error.format());
+        setLoading(false);
+        return;
+      }
 
       await updateUserProfile(user.uid, profileData);
       onComplete();
     } catch (err: any) {
-      if (err.errors) {
-        setError(err.errors[0].message);
-      } else {
-        setError("Failed to save profile. Please check all fields.");
-      }
+      console.error("Save Error:", err);
+      setError(err.message || "Failed to save profile. Please check all fields.");
     } finally {
       setLoading(false);
     }
@@ -311,7 +318,7 @@ export function ProfileOnboarding({ user, onComplete }: ProfileOnboardingProps) 
               ) : (
                 <button
                   onClick={handleSubmit}
-                  disabled={loading || !formData.location?.state || !formData.location?.district}
+                  disabled={loading || !formData.location?.state || !formData.location?.district || (formData.interests?.length || 0) === 0}
                   className="btn-gold px-12 py-3 flex items-center gap-2 disabled:opacity-50"
                 >
                   {loading ? (

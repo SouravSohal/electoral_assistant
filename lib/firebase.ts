@@ -7,10 +7,16 @@ import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 import { 
   getFirestore, 
+  initializeFirestore,
   doc, 
   getDoc, 
   setDoc, 
   updateDoc,
+  setLogLevel,
+  terminate,
+  clearIndexedDbPersistence,
+  disableNetwork,
+  enableNetwork,
   type Firestore 
 } from "firebase/firestore";
 import { UserProfile } from "./schemas";
@@ -35,6 +41,10 @@ if (process.env.NODE_ENV === "development") {
       `Firebase config is missing keys: ${missingKeys.join(", ")}. ` +
       "Ensure your .env.local is correctly populated and you have restarted the dev server."
     );
+  } else {
+    console.log("Firebase config loaded for project:", firebaseConfig.projectId);
+    // Enable debug logging for Firestore
+    setLogLevel('debug');
   }
 }
 
@@ -59,9 +69,26 @@ export function getFirebaseAuth(): Auth {
 
 export function getFirebaseDb(): Firestore {
   if (!db) {
-    db = getFirestore(getFirebaseApp());
+    db = initializeFirestore(getFirebaseApp(), {
+      experimentalForceLongPolling: true,
+      useFetchStreams: false,
+    });
   }
   return db;
+}
+
+export async function resetFirestore(): Promise<void> {
+  const currentDb = getFirebaseDb();
+  await terminate(currentDb);
+  await clearIndexedDbPersistence(currentDb);
+  // @ts-ignore
+  db = undefined;
+}
+
+export async function reconnectFirestore(): Promise<void> {
+  const currentDb = getFirebaseDb();
+  await disableNetwork(currentDb);
+  await enableNetwork(currentDb);
 }
 
 /**

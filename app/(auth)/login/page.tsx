@@ -42,9 +42,22 @@ export default function LoginPage() {
       const auth = getFirebaseAuth();
       await signInWithPopup(auth, provider);
       // router.push("/") is handled by onAuthStateChanged
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login Error:", error);
-      alert("Failed to sign in. Please verify your Firebase API keys.");
+      
+      if (error.code === "auth/user-cancelled") {
+        // Silent or subtle notification - user closed the popup
+        console.log("User cancelled the login flow.");
+      } else if (error.message?.includes("IdP denied access")) {
+        alert(
+          "Access denied by Google. This often means:\n" +
+          "1. Google Sign-in is not enabled in Firebase Console.\n" +
+          "2. Authorized domains (localhost) are not configured.\n" +
+          "3. The API key has restrictions."
+        );
+      } else {
+        alert(`Sign-in failed: ${error.message || "Unknown error"}`);
+      }
     } finally {
       setLoading(false);
     }

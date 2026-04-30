@@ -51,10 +51,10 @@ export function sanitizeInput(input: string): string {
 export function buildSystemPrompt(profile?: z.infer<typeof UserProfileSchema>): string {
   let profileContext = "";
   if (profile) {
-    const age = profile.dateOfBirth 
-      ? Math.floor((Date.now() - new Date(profile.dateOfBirth).getTime()) / 31557600000) 
+    const age = profile.dateOfBirth
+      ? Math.floor((Date.now() - new Date(profile.dateOfBirth).getTime()) / 31557600000)
       : "unknown";
-    
+
     profileContext = `
 USER CONTEXT (CONFIDENTIAL):
 - Name: ${profile.fullName}
@@ -136,7 +136,7 @@ export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>) {
   }
   const genAI = new GoogleGenerativeAI(apiKey);
   return genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
+    model: "gemini-3-flash-preview",
     systemInstruction: buildSystemPrompt(profile),
     generationConfig: {
       maxOutputTokens: 1024,

@@ -15,12 +15,32 @@ export function useAuth() {
         setUser(user);
         if (user) {
           try {
+            const auth = getFirebaseAuth();
+            console.log("Auth Project ID (Config):", auth.app.options.projectId);
+            console.log("Current User UID:", user.uid);
             console.log("Fetching profile for user:", user.uid);
+            
+            // Give Firestore a moment to sync the auth token
+            await new Promise(resolve => setTimeout(resolve, 800)); // Increased delay slightly
+            
             const profileData = await getUserProfile(user.uid);
             console.log("Profile data fetched:", profileData);
             setProfile(profileData);
-          } catch (e) {
+          } catch (e: any) {
             console.error("Failed to fetch profile:", e);
+            if (e.code === "unavailable" || (e.message && e.message.includes("offline"))) {
+              console.warn("Firestore is reporting offline. Attempting to reconnect...");
+              try {
+                const { reconnectFirestore } = await import("@/lib/firebase");
+                await reconnectFirestore();
+                // Retry once
+                const retryProfile = await getUserProfile(user.uid);
+                setProfile(retryProfile);
+                return;
+              } catch (reconnectError) {
+                console.error("Reconnection failed:", reconnectError);
+              }
+            }
             setProfile(null);
           }
         } else {
