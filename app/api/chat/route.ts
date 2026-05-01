@@ -6,84 +6,97 @@
  */
 import { NextRequest } from "next/server";
 import { ChatRequestSchema, createGeminiModel, sanitizeInput } from "@/lib/gemini";
+import { toolExecutors } from "@/lib/tools";
 import { ZodError } from "zod";
 
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
-    // 1. Parse and validate request body
-    let body: unknown;
-    try {
-      body = await req.json();
-    } catch {
-      return Response.json({ error: "Invalid JSON in request body." }, { status: 400 });
+    const body = await req.json();
+    
+    // 1. Validate Input
+    const validation = ChatRequestSchema.safeParse(body);
+    if (!validation.success) {
+      return Response.json(
+        { error: validation.error.issues[0].message },
+        { status: 400 }
+      );
     }
+    const { messages, profile } = validation.data;
 
-    const { messages, profile } = ChatRequestSchema.parse(body);
-
-    // 2. Sanitize the last user message
     const lastMessage = messages[messages.length - 1];
-    if (lastMessage.role !== "user") {
-      return Response.json({ error: "Last message must be from user." }, { status: 400 });
-    }
-
     const sanitizedText = sanitizeInput(lastMessage.parts[0].text);
-    if (!sanitizedText) {
-      return Response.json({ error: "Message is empty after sanitization." }, { status: 400 });
-    }
-
-    // 3. Build history (all messages except the last)
+    
     const history = messages.slice(0, -1).map((msg) => ({
       role: msg.role,
       parts: msg.parts,
     }));
 
-    // 4. Create Gemini model and start chat
     const model = createGeminiModel(profile);
     const chat = model.startChat({ history });
 
-    // 5. Stream the response
-    const result = await chat.sendMessageStream(sanitizedText);
-
-    const stream = new ReadableStream({
-      async start(controller) {
-        const encoder = new TextEncoder();
-        try {
-          for await (const chunk of result.stream) {
-            const text = chunk.text();
-            if (text) {
-              controller.enqueue(encoder.encode(text));
+    // --- Agentic Tool Loop ---
+    let result = await chat.sendMessage(sanitizedText);
+    let response = result.response;
+    let parts = response.candidates?.[0].content.parts || [];
+    
+    // Check for function calls
+    const functionCalls = parts.filter(part => part.functionCall);
+    
+    if (functionCalls.length > 0) {
+      const toolResults = [];
+      for (const call of functionCalls) {
+        const toolName = call.functionCall?.name as keyof typeof toolExecutors;
+        const args = call.functionCall?.args;
+        
+        if (toolExecutors[toolName]) {
+          const output = await (toolExecutors[toolName] as any)(args);
+          toolResults.push({
+            functionResponse: {
+              name: toolName,
+              response: output
             }
-          }
-        } catch (streamError) {
-          controller.error(streamError);
-        } finally {
-          controller.close();
+          });
         }
-      },
-    });
+      }
 
-    return new Response(stream, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "X-Content-Type-Options": "nosniff",
-        "Cache-Control": "no-cache, no-store",
-        "Transfer-Encoding": "chunked",
-      },
-    });
-  } catch (error) {
-    if (error instanceof ZodError) {
-      return Response.json(
-        { error: "Invalid request.", details: error.issues.map((i) => i.message) },
-        { status: 400 }
+      // Final streaming response after tool execution
+      const finalResult = await chat.sendMessageStream(toolResults);
+      return new Response(
+        new ReadableStream({
+          async start(controller) {
+            const encoder = new TextEncoder();
+            try {
+              for await (const chunk of finalResult.stream) {
+                const text = chunk.text();
+                if (text) controller.enqueue(encoder.encode(text));
+              }
+            } catch (e) {
+              controller.error(e);
+            } finally {
+              controller.close();
+            }
+          },
+        }),
+        { headers: { "Content-Type": "text/plain; charset=utf-8" } }
       );
     }
 
-    console.error("[/api/chat] Error:", error);
-    return Response.json(
-      { error: "An error occurred processing your request. Please try again." },
-      { status: 500 }
+    // No tools called, but we might have text already from the first sendMessage
+    const initialText = response.text();
+    return new Response(
+      new ReadableStream({
+        start(controller) {
+          if (initialText) controller.enqueue(new TextEncoder().encode(initialText));
+          controller.close();
+        },
+      }),
+      { headers: { "Content-Type": "text/plain; charset=utf-8" } }
     );
+
+  } catch (error) {
+    console.error("[/api/chat] Agent Error:", error);
+    return Response.json({ error: "Failed to process agentic request." }, { status: 500 });
   }
 }

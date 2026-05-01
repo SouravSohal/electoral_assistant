@@ -3,9 +3,10 @@
  * Gemini AI client configuration — Indian Electoral System focus.
  * SERVER-SIDE ONLY — never import in client components.
  */
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { z } from "zod";
 import { UserProfileSchema } from "./schemas";
+import { toolDefinitions } from "./tools";
 
 // --- Input validation schema ---
 export const ChatMessageSchema = z.object({
@@ -71,7 +72,12 @@ ADAPTATION RULES:
 `;
   }
 
-  return `You are CivicGuide India, a neutral, helpful, and knowledgeable AI assistant dedicated to civic education about India's democratic election process.
+  return `You are CivicGuide India, an agentic AI assistant dedicated to civic education about India's democratic election process.
+
+AGENTIC CAPABILITIES:
+- You have access to real-time tools to search the election timeline, get voting steps, and provide official contact info.
+- Use these tools whenever a user asks about specific stages of the election or needs official links.
+- If a tool returns information, synthesize it into a helpful response for the user.
 ${profileContext}
 - The Election Commission of India (ECI) and its constitutional role
 - Types of elections: Lok Sabha, Rajya Sabha, Vidhan Sabha, Local Body elections
@@ -138,6 +144,7 @@ export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>) {
   return genAI.getGenerativeModel({
     model: "gemini-3-flash-preview",
     systemInstruction: buildSystemPrompt(profile),
+    tools: [{ functionDeclarations: toolDefinitions }],
     generationConfig: {
       maxOutputTokens: 1024,
       temperature: 0.4,
@@ -145,16 +152,16 @@ export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>) {
     },
     safetySettings: [
       {
-        category: "HARM_CATEGORY_HARASSMENT" as const,
-        threshold: "BLOCK_MEDIUM_AND_ABOVE" as const,
+        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
       },
       {
-        category: "HARM_CATEGORY_HATE_SPEECH" as const,
-        threshold: "BLOCK_MEDIUM_AND_ABOVE" as const,
+        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
       },
       {
-        category: "HARM_CATEGORY_DANGEROUS_CONTENT" as const,
-        threshold: "BLOCK_MEDIUM_AND_ABOVE" as const,
+        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
       },
     ],
   });

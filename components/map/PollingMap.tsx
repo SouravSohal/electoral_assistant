@@ -1,3 +1,4 @@
+/// <reference types="@types/google.maps" />
 "use client";
 
 import { useEffect, useRef, useState, useMemo } from "react";
@@ -26,7 +27,7 @@ const render = (status: Status) => {
       </p>
     </div>
   );
-  return null;
+  return <></>;
 };
 
 function MapComponent({ locations }: { locations: PollingLocation[] }) {

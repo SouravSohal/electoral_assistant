@@ -101,7 +101,7 @@ export function ProfileOnboarding({ user, onComplete }: ProfileOnboardingProps) 
       const result = UserProfileSchema.safeParse(profileData);
       
       if (!result.success) {
-        const firstError = result.error.errors[0].message;
+        const firstError = result.error.issues[0].message;
         setError(firstError);
         console.error("Validation failed:", result.error.format());
         setLoading(false);

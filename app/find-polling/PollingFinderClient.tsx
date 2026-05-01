@@ -30,7 +30,8 @@ export default function PollingFinderClient({ mapsApiKey }: PollingFinderClientP
       city: hub.city,
       state: hub.state,
       zip: "",
-    }
+    },
+    pollingHours: "7:00 AM - 6:00 PM"
   }));
 
   const locations = data?.pollingLocations || (hasSearched ? [] : featuredLocations);

@@ -62,16 +62,15 @@ export function Features() {
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {FEATURES.map((feature) => {
-            const Component = feature.href ? Link : 'div';
-            return (
-              <Component 
-                key={feature.id}
-                href={feature.href || ''}
-                className={cn(
-                  "group glass-panel p-8 rounded-2xl transition-all border border-[hsla(210,20%,98%,0.05)] hover:border-[hsla(210,20%,98%,0.15)]",
-                  feature.href ? "hover:bg-[hsla(210,20%,98%,0.03)] hover:-translate-y-1" : ""
-                )}
-              >
+            const commonProps = {
+              className: cn(
+                "group glass-panel p-8 rounded-2xl transition-all border border-[hsla(210,20%,98%,0.05)] hover:border-[hsla(210,20%,98%,0.15)]",
+                feature.href ? "hover:bg-[hsla(210,20%,98%,0.03)] hover:-translate-y-1" : ""
+              )
+            };
+
+            const content = (
+              <>
                 <div className="w-12 h-12 rounded-xl bg-[hsla(210,20%,98%,0.05)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   {feature.icon}
                 </div>
@@ -81,7 +80,21 @@ export function Features() {
                 <p className="text-[15px] leading-relaxed text-[var(--color-brand-muted)]">
                   {feature.description}
                 </p>
-              </Component>
+              </>
+            );
+
+            if (feature.href) {
+              return (
+                <Link key={feature.id} href={feature.href} {...commonProps}>
+                  {content}
+                </Link>
+              );
+            }
+
+            return (
+              <div key={feature.id} {...commonProps}>
+                {content}
+              </div>
             );
           })}
         </div>
