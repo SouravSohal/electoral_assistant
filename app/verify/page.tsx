@@ -12,7 +12,20 @@ export default function VerifyPage() {
   const [result, setResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
   const resultRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Sync disabled state after mount to avoid hydration mismatch
+  useEffect(() => {
+    if (mounted) {
+      setButtonDisabled(isLoading || inputText.length < 10);
+    }
+  }, [mounted, isLoading, inputText]);
 
   // Auto-scroll to bottom as result streams in
   useEffect(() => {
@@ -132,7 +145,8 @@ export default function VerifyPage() {
 
                   <button
                     type="submit"
-                    disabled={isLoading || inputText.length < 10}
+                    disabled={buttonDisabled}
+                    suppressHydrationWarning
                     className="btn-gold w-full flex items-center justify-center gap-3 py-5 text-lg shadow-[0_8px_30px_hsla(43,92%,58%,0.15)] group-hover:shadow-[0_12px_40px_hsla(43,92%,58%,0.25)] transition-all active:scale-[0.98]"
                   >
                     {isLoading ? (

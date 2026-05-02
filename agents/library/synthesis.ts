@@ -10,11 +10,13 @@ const model = createAgentModel(0.1);
  */
 export async function synthesisNode(state: AgentStateType) {
   const { claim, researchResults, legalAnalysis } = state;
-  
+
   const systemPrompt = `You are the Final Fact-Check Editor for CivicGuide India.
 Your goal is to synthesize the research and legal analysis into a clear, high-fidelity report for the public.
 
 You MUST start your response with a VERDICT: [True / False / Misleading].
+
+Keep the details and report description concise and straight to the point and short.
 
 Report Structure:
 1. Verdict (Bold and Clear)
