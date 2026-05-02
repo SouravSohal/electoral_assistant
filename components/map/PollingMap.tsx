@@ -155,7 +155,7 @@ export function PollingMap({ locations, apiKey }: MapProps) {
   }
 
   return (
-    <div className="w-full h-[400px] md:h-[600px] relative">
+    <div className="w-full h-[400px] md:h-[600px] relative" data-testid="polling-map">
       <Wrapper apiKey={apiKey} render={render} libraries={["places"]}>
         <MapComponent locations={locations} />
       </Wrapper>

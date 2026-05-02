@@ -77,7 +77,7 @@ export function AccessibilityToolbar() {
   };
 
   return (
-    <div className="fixed bottom-6 left-6 z-[60]" ref={menuRef}>
+    <aside className="fixed bottom-6 left-6 z-[60]" ref={menuRef} aria-label="Accessibility Settings Panel">
       {/* Floating Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -146,6 +146,7 @@ export function AccessibilityToolbar() {
             </label>
             <button
               onClick={() => handleContrast(!highContrast)}
+              aria-label={`Toggle high contrast mode: currently ${highContrast ? 'enabled' : 'disabled'}`}
               className={cn(
                 "w-10 h-5 rounded-full relative transition-colors duration-300",
                 highContrast ? "bg-[var(--color-brand-green)]" : "bg-[hsla(210,20%,98%,0.1)]"
@@ -166,6 +167,7 @@ export function AccessibilityToolbar() {
             </label>
             <button
               onClick={() => handleDyslexic(!dyslexicFont)}
+              aria-label={`Toggle dyslexic friendly typography: currently ${dyslexicFont ? 'enabled' : 'disabled'}`}
               className={cn(
                 "w-10 h-5 rounded-full relative transition-colors duration-300",
                 dyslexicFont ? "bg-[var(--color-brand-green)]" : "bg-[hsla(210,20%,98%,0.1)]"
@@ -183,6 +185,6 @@ export function AccessibilityToolbar() {
           Settings are saved to your browser for future visits.
         </p>
       </div>
-    </div>
+    </aside>
   );
 }

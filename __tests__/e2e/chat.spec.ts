@@ -7,7 +7,7 @@ test.describe('AI Assistant E2E', () => {
 
   test('should load the chat interface', async ({ page }) => {
     await expect(page.getByTestId('chat-input')).toBeVisible();
-    await expect(page.getByText('Ask AI Assistant')).toBeVisible();
+    await expect(page.getByText('Civic AI Assistant')).toBeVisible();
   });
 
   test('should show suggested questions when empty', async ({ page }) => {

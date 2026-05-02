@@ -6,12 +6,14 @@
   --color-brand-navy: hsl(222, 65%, 7%);
   --color-brand-surface: hsl(222, 65%, 11%);
   --color-brand-elevated: hsl(222, 55%, 15%);
-  --color-brand-blue: hsl(215, 85%, 55%);
+  --color-brand-blue: hsl(215, 85%, 45%);
   --color-brand-saffron: hsl(28, 100%, 55%);
   --color-brand-green: hsl(135, 60%, 45%);
   
   --color-brand-white: hsl(210, 20%, 98%);
-  --color-brand-muted: hsl(220, 15%, 65%);
+  --color-brand-muted: hsl(220, 15%, 85%);
+  --color-brand-gray-300: hsl(220, 15%, 80%);
+  --color-brand-gray-500: hsl(220, 12%, 70%);
 
   /* Typography */
   --font-display: var(--font-display), "Outfit", system-ui, sans-serif;

@@ -10,8 +10,8 @@ test.describe('Polling Booth Finder E2E', () => {
     await expect(page.getByTestId('polling-map')).toBeVisible();
   });
 
-  test('should show empty state initially', async ({ page }) => {
-    await expect(page.getByText(/Search for your address above/i)).toBeVisible();
+  test('should show initial state', async ({ page }) => {
+    await expect(page.getByText(/Featured Election Hubs/i)).toBeVisible();
   });
 
   test('should search for an address and show results', async ({ page }) => {

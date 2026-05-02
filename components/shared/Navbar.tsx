@@ -177,7 +177,7 @@ export function Navbar() {
 
             <Link
               href="/assistant"
-              className="focus-ring group flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-white bg-[var(--color-brand-blue)] rounded-full transition-all duration-200 hover:bg-[hsla(215,85%,60%,1)] shadow-sm hover:shadow-[0_4px_12px_hsla(215,85%,55%,0.2)] hover:-translate-y-[1px]"
+              className="focus-ring group flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-white bg-[var(--color-brand-blue)] rounded-full transition-all duration-200 hover:brightness-110 shadow-sm hover:shadow-[0_4px_12px_hsla(215,85%,45%,0.2)] hover:-translate-y-[1px]"
             >
               <Sparkles size={16} />
               <span>Ask AI</span>

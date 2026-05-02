@@ -58,6 +58,11 @@ graph TD
 -   **VVPAT Audit Trail**: Simulates the 7-second paper slip audit trail, educating voters on how to verify their vote.
 -   **Educational Mode**: Step-by-step guidance on identifying candidates, pressing the ballot button, and confirming the beep.
 
+### 🛡️ Candidate Affidavit Analyzer (KYC)
+-   **Know Your Candidate**: Agentic analysis of candidate affidavits to extract Criminal, Financial, and Educational (CFE) data.
+-   **Simplified Reports**: Transforms complex legal filings into easy-to-read, professional reports.
+-   **Agentic Search**: Uses specialized nodes for research, analysis, and synthesis to ensure data accuracy.
+
 ### 🔍 Fact-Check Engine (Bento Cockpit)
 -   **Multi-Agent Orchestration**: Powered by a dedicated **LangGraph** workflow that uses collaborative reasoning between Researcher and Analyst agents.
 -   **Cockpit UI**: A high-fidelity, non-scrollable "Cockpit" interface designed to fit the viewport perfectly, with independent scrollable areas for deep-dive reports.

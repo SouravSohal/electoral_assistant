@@ -39,7 +39,7 @@ export function AddressSearch({ onSearch, isLoading }: AddressSearchProps) {
           type="text"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          placeholder="Enter your city, area, or pin code..."
+          placeholder="Enter your address..."
           className="input-base pl-12 pr-32 py-4 w-full h-14 text-lg"
           disabled={isLoading}
         />
