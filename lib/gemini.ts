@@ -170,13 +170,11 @@ Always respond in Markdown. Use bold headers. Include a "⚠️ AI-Generated Fac
 
 // --- Gemini Client Factory ---    gemini-3-flash-preview
 export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>, systemInstruction?: string) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    throw new Error("GEMINI_API_KEY is not configured");
-  }
+  const apiKey = process.env.GEMINI_API_KEY || "BUILD_TIME_DUMMY_KEY";
+
   const genAI = new GoogleGenerativeAI(apiKey);
   return genAI.getGenerativeModel({
-    model: "gemini-3.1-pro-preview",
+    model: "gemini-3-flash-preview",
     systemInstruction: systemInstruction || buildSystemPrompt(profile),
     tools: [{ functionDeclarations: toolDefinitions }],
     generationConfig: {
