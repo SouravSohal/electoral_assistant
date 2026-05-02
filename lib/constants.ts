@@ -402,11 +402,29 @@ export const SUGGESTED_QUESTIONS = [
     category: "Voting Options",
   },
   {
+    id: "candidate-info",
+    text: "Tell me about the candidates in my constituency.",
+    icon: "Users",
+    category: "How It Works",
+  },
+  {
     id: "mcc",
     text: "What is the Model Code of Conduct?",
     icon: "ScrollText",
     category: "Rules & Regulations",
   },
+] as const;
+
+// --- EVM Simulator Mock Data ---
+export const MOCK_EVM_CANDIDATES = [
+  { id: "cand-1", name: "Candidate A", party: "Party One", symbol: "Lotus", color: "hsl(28, 92%, 58%)" },
+  { id: "cand-2", name: "Candidate B", party: "Party Two", symbol: "Hand", color: "hsl(215, 85%, 52%)" },
+  { id: "cand-3", name: "Candidate C", party: "Party Three", symbol: "Elephant", color: "hsl(222, 65%, 12%)" },
+  { id: "cand-4", name: "Candidate D", party: "Party Four", symbol: "Broom", color: "hsl(43, 92%, 58%)" },
+  { id: "cand-5", name: "Candidate E", party: "Party Five", symbol: "Bicycle", color: "hsl(142, 71%, 45%)" },
+  { id: "cand-6", name: "Candidate F", party: "Party Six", symbol: "Clock", color: "hsl(280, 65%, 45%)" },
+  { id: "cand-7", name: "Candidate G", party: "Party Seven", symbol: "Hammer & Sickle", color: "hsl(0, 84%, 55%)" },
+  { id: "cand-nota", name: "NOTA", party: "None of the Above", symbol: "Cross", color: "hsl(0, 0%, 40%)" },
 ] as const;
 
 // --- Navigation Items ---
@@ -420,7 +438,7 @@ export const NAV_ITEMS = [
     id: "nav-guide",
     children: [
       { href: "/how-to-vote", label: "How to Vote", id: "nav-how-to-vote" },
-      { href: "/ballot", label: "Ballot Preview", id: "nav-ballot" },
+      { href: "/evm-simulator", label: "EVM Simulator", id: "nav-evm-simulator" },
     ]
   },
 ] as const;
@@ -451,6 +469,7 @@ export const FEATURES = [
     description:
       "Explore all 8 stages of India's election process — from ECI announcement and MCC to counting day and government formation.",
     color: "saffron",
+    href: "/timeline",
   },
   {
     id: "feature-polling",
@@ -459,6 +478,7 @@ export const FEATURES = [
     description:
       "Find your polling booth, verify your voter details, and get directions — linked directly to ECI's official voter portal.",
     color: "blue",
+    href: "/find-polling",
   },
   {
     id: "feature-multilingual",
@@ -471,11 +491,11 @@ export const FEATURES = [
   {
     id: "feature-evm",
     icon: "Tablet",
-    title: "Interactive EVM Preview",
+    title: "Interactive EVM Practice",
     description:
-      "Practice voting on a digital mockup of the Electronic Voting Machine (EVM) and learn how the VVPAT system confirms your vote.",
+      "Experience a realistic digital mockup of the Electronic Voting Machine (EVM) and learn how the VVPAT system confirms your vote.",
     color: "blue",
-    href: "/ballot",
+    href: "/evm-simulator",
   },
   {
     id: "feature-accessible",

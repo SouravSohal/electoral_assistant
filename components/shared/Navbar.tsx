@@ -83,9 +83,12 @@ export function Navbar() {
                       <ChevronDown size={14} className="group-hover/dropdown:rotate-180 transition-transform duration-200" />
                     </button>
                     
-                    {/* Dropdown Menu */}
-                    <div className="absolute top-full left-0 mt-2 w-48 opacity-0 translate-y-2 pointer-events-none group-hover/dropdown:opacity-100 group-hover/dropdown:translate-y-0 group-hover/dropdown:pointer-events-auto transition-all duration-200 z-50">
-                      <div className="glass-panel border border-[hsla(210,20%,98%,0.1)] p-2 shadow-2xl">
+                    {/* Dropdown Menu - Added padding top to bridge the gap and removed mt-2 */}
+                    <div className="absolute top-[80%] left-0 pt-4 w-48 opacity-0 translate-y-2 pointer-events-none group-hover/dropdown:opacity-100 group-hover/dropdown:translate-y-0 group-hover/dropdown:pointer-events-auto transition-all duration-200 z-50">
+                      <div className="glass-panel border border-[hsla(210,20%,98%,0.1)] p-2 shadow-2xl relative">
+                        {/* Invisible bridge to ensure hover is maintained */}
+                        <div className="absolute -top-4 left-0 w-full h-4" />
+                        
                         {item.children.map((child) => (
                           <Link
                             key={child.id}

@@ -17,10 +17,15 @@ export async function analystNode(state: AgentStateType) {
   const legalContext = await ragTool.invoke(claim);
   
   const systemPrompt = `You are a Legal & Electoral Policy Analyst for CivicGuide India.
-Your task is to analyze research findings against the "Representation of the People Act (1951)" and ECI's "Model Code of Conduct".
+Your task is to analyze research findings against the "Representation of the People Act (1951)" and ECI guidelines.
 
-Guidelines:
-1. Identify if the claim violates specific legal sections.
+If the input is about CANDIDATES:
+1. Summarize their background (Criminal, Financial, Educational) based ONly on the research provided.
+2. Maintain strict non-partisanship. Do not favor any party or candidate.
+3. State clearly if some information is not found in the search results.
+
+If the input is a FACT-CHECK:
+1. Identify if the claim violates specific legal sections of the RPA 1951.
 2. Determine if the claim describes a legitimate electoral procedure.
 3. Highlight any procedural inconsistencies.
 

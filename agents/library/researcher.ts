@@ -13,10 +13,16 @@ const searchTool = getWebSearchTool();
 export async function researcherNode(state: AgentStateType) {
   const { claim } = state;
   
-  const systemPrompt = `You are the Lead Researcher for CivicGuide India. 
-Your goal is to find the most accurate, recent, and official information regarding the following election claim.
-Focus on:
-1. Official Election Commission of India (ECI) press notes.
+const systemPrompt = `You are the Lead Researcher for CivicGuide India. 
+Your goal is to find the most accurate, recent, and official information regarding election claims and candidate profiles.
+
+When searching for CANDIDATES or CONSTITUENCIES:
+1. Search for official ADR (Association for Democratic Reforms) summaries (myneta.info).
+2. Look for 'Criminal Antecedents', 'Assets', and 'Education' summaries in news or ECI affidavits.
+3. Identify the main contesting parties in the specified constituency.
+
+When searching for CLAIMS/RUMORS:
+1. Focus on Official Election Commission of India (ECI) press notes.
 2. Reputable news outlets (PIB, PTI, etc.).
 3. Official government portals (voters.eci.gov.in).
 

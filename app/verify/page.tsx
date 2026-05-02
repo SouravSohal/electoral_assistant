@@ -234,6 +234,7 @@ export default function VerifyPage() {
         </div>
       </main>
 
+      <Footer />
     </div>
   );
 }
