@@ -168,7 +168,7 @@ OUTPUT FORMAT:
 Always respond in Markdown. Use bold headers. Include a "⚠️ AI-Generated Fact-Check — Verify with 1950 or voters.eci.gov.in" disclaimer at the bottom.`;
 }
 
-// --- Gemini Client Factory ---
+// --- Gemini Client Factory ---    gemini-3-flash-preview
 export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>, systemInstruction?: string) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -176,7 +176,7 @@ export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>, s
   }
   const genAI = new GoogleGenerativeAI(apiKey);
   return genAI.getGenerativeModel({
-    model: "gemini-3-flash-preview",
+    model: "gemini-3.1-pro-preview",
     systemInstruction: systemInstruction || buildSystemPrompt(profile),
     tools: [{ functionDeclarations: toolDefinitions }],
     generationConfig: {

@@ -53,19 +53,25 @@ graph TD
 
 ## ✨ 3. Core Features & Highlights
 
+### 🕹️ EVM & VVPAT Simulator
+-   **Tactile Feedback**: A hyper-realistic, industrial-grade simulator that replicates the exact look and feel of an Indian Electronic Voting Machine.
+-   **VVPAT Audit Trail**: Simulates the 7-second paper slip audit trail, educating voters on how to verify their vote.
+-   **Educational Mode**: Step-by-step guidance on identifying candidates, pressing the ballot button, and confirming the beep.
+
+### 🔍 Fact-Check Engine (Bento Cockpit)
+-   **Multi-Agent Orchestration**: Powered by a dedicated **LangGraph** workflow that uses collaborative reasoning between Researcher and Analyst agents.
+-   **Cockpit UI**: A high-fidelity, non-scrollable "Cockpit" interface designed to fit the viewport perfectly, with independent scrollable areas for deep-dive reports.
+-   **Legal Grounding**: Every check is cross-referenced with the **Representation of the People Act (1951)**.
+-   **Official Citations**: Direct links to ECI manuals and press notes provided for every verdict.
+
 ### 🤖 Agentic AI Assistant
 -   **Contextual Memory**: Remembers previous interactions within a session (**Short-term**) and user preferences across sessions (**Long-term**).
 -   **Personalized Onboarding**: Tailors guidance based on the user's voter category (e.g., First-time, Senior Citizen, PWD).
 -   **Streaming Responses**: Real-time AI response delivery for a snappy, interactive experience.
 
-### 🔍 Fact-Check Engine
--   **Rumor Verification**: Paste any claim or WhatsApp forward to get an evidence-backed verdict.
--   **Legal Grounding**: Every check is cross-referenced with the **Representation of the People Act (1951)**.
--   **Official Citations**: Direct links to ECI manuals and press notes provided for every verdict.
-
 ### 🗺️ Polling Booth Finder
 -   **Visual Map Integration**: Uses **Google Maps** to show precise booth locations.
--   **Official Data**: Integrated with the **Google Civic Information API** for official polling station details.
+-   **Official Data**: Integrated with the **Google Civic Information API** (where available) and ECI portals for official polling station details.
 -   **Places Autocomplete**: Easy address searching via Google Places.
 
 ### ⏳ Interactive Election Timeline
@@ -84,7 +90,7 @@ graph TD
 
 | Service | Application |
 | :--- | :--- |
-| **Gemini 3.1 Flash** | Core reasoning, RAG, and high-speed chat orchestration. |
+| **Gemini 1.5 Flash** | Core reasoning, RAG, and high-speed chat orchestration via LangChain. |
 | **Firebase Auth** | Secure, one-tap login for personalized citizen profiles. |
 | **Firestore** | Real-time database for user profiles and conversation memory. |
 | **Google Maps API** | Polling booth visualization and address autocomplete. |
@@ -97,7 +103,7 @@ graph TD
 ## 🛡️ 5. Security & Trust
 
 -   **XSS Protection**: Robust input sanitization via `sanitizeInput()` on all user data.
--   **Rate Limiting**: 20 requests/minute per IP to prevent service abuse.
+-   **Rate Limiting**: 20 requests/minute per IP to prevent service abuse via `proxy.ts`.
 -   **Data Privacy**: All personal context is encrypted and stored securely in Firebase.
 -   **Neutrality Promise**: Hard-coded system instructions ensure absolute non-partisanship.
 

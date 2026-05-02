@@ -11,7 +11,7 @@ export function createAgentModel(temperature = 0) {
   }
 
   return new ChatGoogleGenerativeAI({
-    model: "gemini-3-flash-preview",
+    model: "gemini-3.1-pro-preview",
     apiKey: apiKey,
     temperature: temperature,
     maxOutputTokens: 2048,

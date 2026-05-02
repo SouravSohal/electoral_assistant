@@ -433,6 +433,7 @@ export const NAV_ITEMS = [
   { href: "/timeline", label: "Timeline", id: "nav-timeline" },
   { href: "/verify", label: "Fact-Check", id: "nav-verify" },
   { href: "/find-polling", label: "Polling Booth", id: "nav-polling" },
+  { href: "/candidates", label: "Candidates", id: "nav-candidates" },
   { 
     label: "Guide", 
     id: "nav-guide",
@@ -461,6 +462,15 @@ export const FEATURES = [
       "Verify election-related rumors or 'WhatsApp forwards' using AI trained on ECI guidelines and procedural rules.",
     color: "green",
     href: "/verify",
+  },
+  {
+    id: "feature-candidates",
+    icon: "FileSearch",
+    title: "Affidavit Analyzer",
+    description:
+      "Understand candidate backgrounds in seconds. AI summarizes complex Form 26 affidavits into easy CFE (Criminal, Financial, Educational) reports.",
+    color: "saffron",
+    href: "/candidates",
   },
   {
     id: "feature-timeline",
