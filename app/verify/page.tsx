@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Navbar } from "@/components/shared/Navbar";
-import { Footer } from "@/components/shared/Footer";
 import { DynamicIcon } from "@/components/shared/DynamicIcon";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
@@ -85,40 +84,44 @@ export default function VerifyPage() {
   const verdict = getVerdict();
 
   return (
-    <div className="flex flex-col min-h-screen bg-civic-navy text-civic-white overflow-x-hidden">
+    <div className="flex flex-col h-screen bg-civic-navy text-civic-white overflow-hidden">
       <Navbar />
-      
-      <main className="flex-grow container-max section-padding pt-32 pb-20 animate-fade-in-up">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-16 relative">
-            <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-64 h-64 bg-civic-blue/10 blur-[100px] rounded-full -z-10 animate-pulse-glow" />
-            
-            <div className="inline-flex items-center justify-center p-4 mb-8 rounded-2xl bg-gradient-to-br from-civic-blue/20 to-transparent border border-civic-blue/30 shadow-[0_0_40px_hsla(215,85%,55%,0.1)]">
-              <DynamicIcon name="ShieldCheck" className="w-10 h-10 text-civic-blue" />
+
+      <main className="flex-grow pt-24 pb-6 px-4 md:px-8 overflow-hidden">
+        <div className="container-max h-full flex flex-col">
+          {/* Header - Compact */}
+          <div className="mb-8 relative flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-display font-black tracking-tighter flex items-center gap-3">
+                <span className="p-2 rounded-xl bg-civic-blue/20 border border-civic-blue/30">
+                  <DynamicIcon name="ShieldCheck" className="w-8 h-8 text-civic-blue" />
+                </span>
+                AI <span className="gradient-text">Fact-Checker</span>
+              </h1>
+              <p className="text-sm text-civic-gray-300 mt-1 max-w-xl">
+                Verifying electoral claims against ECI guidelines and the Representation of the People Act.
+              </p>
             </div>
-            
-            <h1 className="text-display mb-6 tracking-tight">
-              AI <span className="gradient-text">Fact-Checker</span>
-            </h1>
-            <p className="text-subheadline text-civic-gray-300 max-w-2xl mx-auto leading-relaxed">
-              Combat misinformation with intelligence. Paste any suspected election rumor 
-              to verify it against official ECI guidelines and legal frameworks.
-            </p>
+
+            <div className="hidden md:flex items-center gap-4">
+              <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] uppercase tracking-widest font-bold text-civic-gray-500">
+                Agentic Status: <span className="text-emerald-400">Online</span>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Input Form */}
-            <div className="lg:col-span-7">
-              <div className="glass-card p-6 md:p-10 border-white/5 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-civic-blue/5 to-transparent -z-10 group-hover:scale-110 transition-transform duration-700" />
-                
-                <form onSubmit={handleVerify} className="space-y-6">
-                  <div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow overflow-hidden min-h-0">
+            {/* Input Form Area - Scrollable if content too long */}
+            <div className="lg:col-span-5 flex flex-col h-full overflow-hidden">
+              <div className="glass-card p-6 md:p-8 border-white/5 overflow-y-auto custom-scrollbar">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-civic-blue/5 to-transparent -z-10" />
+
+                <form onSubmit={handleVerify} className="space-y-10 h-full flex flex-col">
+                  <div className="flex-grow">
                     <div className="flex items-center justify-between mb-3">
-                      <label 
-                        htmlFor="misinfo-input" 
-                        className="text-sm font-bold uppercase tracking-widest text-civic-gray-500"
+                      <label
+                        htmlFor="misinfo-input"
+                        className="text-xs font-bold uppercase tracking-widest text-civic-gray-500"
                       >
                         Suspected Claim
                       </label>
@@ -128,7 +131,7 @@ export default function VerifyPage() {
                     </div>
                     <textarea
                       id="misinfo-input"
-                      className="input-base min-h-[220px] resize-none text-lg leading-relaxed placeholder:text-white/20 focus:border-civic-blue/50"
+                      className="input-base min-h-[270px] lg:min-h-[370px] h-full resize-none text-lg leading-relaxed placeholder:text-white/20 focus:border-civic-blue/50"
                       placeholder="Paste the message here... e.g. 'ECI has changed the voting age to 21 for 2026'"
                       value={inputText}
                       onChange={(e) => setInputText(e.target.value)}
@@ -138,7 +141,7 @@ export default function VerifyPage() {
 
                   {error && (
                     <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-start gap-4 animate-in fade-in slide-in-from-top-2">
-                      <DynamicIcon name="AlertCircle" className="w-6 h-6 text-red-500 shrink-0" />
+                      <DynamicIcon name="AlertCircle" className="w-5 h-5 text-red-500 shrink-0" />
                       <p className="text-sm text-red-200 leading-tight">{error}</p>
                     </div>
                   )}
@@ -147,7 +150,7 @@ export default function VerifyPage() {
                     type="submit"
                     disabled={buttonDisabled}
                     suppressHydrationWarning
-                    className="btn-gold w-full flex items-center justify-center gap-3 py-5 text-lg shadow-[0_8px_30px_hsla(43,92%,58%,0.15)] group-hover:shadow-[0_12px_40px_hsla(43,92%,58%,0.25)] transition-all active:scale-[0.98]"
+                    className="btn-gold w-full flex items-center justify-center gap-3 py-5 text-lg shadow-[0_8px_30px_hsla(43,92%,58%,0.15)] hover:shadow-[0_12px_40px_hsla(43,92%,58%,0.25)] transition-all active:scale-[0.98] shrink-0"
                   >
                     {isLoading ? (
                       <>
@@ -163,92 +166,96 @@ export default function VerifyPage() {
                   </button>
                 </form>
               </div>
+
+              {/* How it works - Compact Footer for column */}
+              <div className="mt-4 p-4 rounded-2xl bg-gradient-to-br from-civic-saffron/10 to-transparent border border-civic-saffron/20">
+                <div className="flex items-center gap-3 mb-1">
+                  <DynamicIcon name="Scale" className="w-4 h-4 text-civic-saffron" />
+                  <h4 className="font-bold text-[10px] text-civic-saffron uppercase tracking-widest">Legal Engine</h4>
+                </div>
+                <p className="text-[10px] text-civic-gray-300 leading-tight">
+                  Cross-referenced with <strong>RP Act (1951)</strong> and ECI guidelines.
+                </p>
+              </div>
             </div>
 
-            {/* Results / Sidebar Area */}
-            <div className="lg:col-span-5 space-y-6">
-              {(result || isLoading) ? (
-                <div className="glass-card p-6 md:p-8 border-civic-blue/20 bg-civic-blue/[0.02] animate-in fade-in slide-in-from-right-4 duration-500 sticky top-32">
-                  <div className="flex items-center gap-4 mb-8 pb-4 border-b border-white/10">
-                    <div className={cn(
-                      "w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg",
-                      isLoading ? "bg-civic-gold/20 animate-pulse" : "bg-civic-blue/20"
-                    )}>
-                      <DynamicIcon 
-                        name={isLoading ? "Loader2" : "FileCheck2"} 
-                        className={cn("w-6 h-6", isLoading ? "animate-spin text-civic-gold" : "text-civic-blue")} 
-                      />
-                    </div>
-                    <div>
-                      <h2 className="text-xl font-bold leading-none mb-1">AI Analysis</h2>
-                      <p className="text-xs text-civic-gray-500 uppercase tracking-widest">
-                        {isLoading ? "Generating report..." : "Verified by Gemini"}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="prose prose-invert prose-civic max-w-none text-[15px] leading-relaxed">
-                    {/* Verdict Banner */}
-                    {verdict && !isLoading && (
-                      <div className={cn(
-                        "mb-6 p-4 rounded-2xl border flex items-center gap-3 animate-in zoom-in-95 duration-500",
-                        verdict === "TRUE" || verdict === "VERIFIED" 
-                          ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" 
-                          : verdict === "FALSE" || verdict === "DEBUNKED"
-                          ? "bg-red-500/10 border-red-500/20 text-red-400"
-                          : "bg-amber-500/10 border-amber-500/20 text-amber-400"
-                      )}>
-                        <DynamicIcon 
-                          name={verdict === "TRUE" || verdict === "VERIFIED" ? "CheckCircle2" : "AlertTriangle"} 
-                          className="w-5 h-5 shrink-0" 
-                        />
-                        <span className="font-black uppercase tracking-[0.2em] text-xs">
-                          Verdict: {verdict}
-                        </span>
+            {/* Results Area - Independent Scroll */}
+            <div className="lg:col-span-7 flex flex-col h-full overflow-hidden">
+              <div className="glass-card flex-grow overflow-hidden flex flex-col border-civic-blue/20 bg-civic-blue/[0.01]">
+                {(result || isLoading) ? (
+                  <>
+                    <div className="p-6 border-b border-white/5 flex items-center justify-between shrink-0">
+                      <div className="flex items-center gap-4">
+                        <div className={cn(
+                          "w-10 h-10 rounded-xl flex items-center justify-center",
+                          isLoading ? "bg-civic-gold/20 animate-pulse" : "bg-civic-blue/20"
+                        )}>
+                          <DynamicIcon
+                            name={isLoading ? "Loader2" : "FileCheck2"}
+                            className={cn("w-5 h-5", isLoading ? "animate-spin text-civic-gold" : "text-civic-blue")}
+                          />
+                        </div>
+                        <div>
+                          <h2 className="text-lg font-bold leading-none mb-1">AI Intelligence Report</h2>
+                          <p className="text-[10px] text-civic-gray-500 uppercase tracking-widest">
+                            {isLoading ? "Synthesizing research..." : "Final Verdict Issued"}
+                          </p>
+                        </div>
                       </div>
-                    )}
 
-                    {!result && isLoading && (
-                      <div className="space-y-4">
-                        <div className="h-4 bg-white/5 rounded-full w-3/4 animate-pulse" />
-                        <div className="h-4 bg-white/5 rounded-full w-full animate-pulse" />
-                        <div className="h-20 bg-white/5 rounded-2xl w-full animate-pulse" />
-                        <div className="h-4 bg-white/5 rounded-full w-1/2 animate-pulse" />
+                      {verdict && !isLoading && (
+                        <div className={cn(
+                          "px-4 py-2 rounded-full border flex items-center gap-2",
+                          verdict === "TRUE" || verdict === "VERIFIED"
+                            ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
+                            : verdict === "FALSE" || verdict === "DEBUNKED"
+                              ? "bg-red-500/10 border-red-500/20 text-red-400"
+                              : "bg-amber-500/10 border-amber-500/20 text-amber-400"
+                        )}>
+                          <DynamicIcon
+                            name={verdict === "TRUE" || verdict === "VERIFIED" ? "CheckCircle2" : "AlertTriangle"}
+                            className="w-4 h-4"
+                          />
+                          <span className="font-black text-xs uppercase tracking-wider">
+                            {verdict}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex-grow overflow-y-auto p-8 custom-scrollbar">
+                      <div className="prose prose-invert prose-civic max-w-none text-[16px] leading-relaxed">
+                        {!result && isLoading && (
+                          <div className="space-y-6">
+                            <div className="h-4 bg-white/5 rounded-full w-3/4 animate-pulse" />
+                            <div className="h-4 bg-white/5 rounded-full w-full animate-pulse" />
+                            <div className="h-32 bg-white/5 rounded-2xl w-full animate-pulse" />
+                            <div className="h-4 bg-white/5 rounded-full w-1/2 animate-pulse" />
+                            <div className="h-4 bg-white/5 rounded-full w-2/3 animate-pulse" />
+                          </div>
+                        )}
+                        <ReactMarkdown>{result}</ReactMarkdown>
                       </div>
-                    )}
-                    <ReactMarkdown>{result}</ReactMarkdown>
+                      <div ref={resultRef} />
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex flex-col items-center text-center justify-center h-full p-12">
+                    <div className="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center mb-6 relative">
+                      <div className="absolute inset-0 rounded-full bg-civic-blue/5 animate-pulse-glow" />
+                      <DynamicIcon name="MessageSquareText" className="w-10 h-10 text-white/20" />
+                    </div>
+                    <h3 className="text-2xl font-display font-bold text-white/40 mb-3 tracking-tight">System Ready</h3>
+                    <p className="text-sm text-white/30 max-w-[300px] leading-relaxed">
+                      Enter a claim on the left. The Multi-Agent system will perform research, legal analysis, and issue a verdict.
+                    </p>
                   </div>
-                  <div ref={resultRef} />
-                </div>
-              ) : (
-                <div className="glass-card p-8 border-dashed border-white/10 flex flex-col items-center text-center justify-center min-h-[400px]">
-                  <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6">
-                    <DynamicIcon name="MessageSquareText" className="w-10 h-10 text-white/20" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white/60 mb-2">No Analysis Yet</h3>
-                  <p className="text-sm text-white/30 max-w-[200px]">
-                    Paste text on the left to start the AI verification process.
-                  </p>
-                </div>
-              )}
-
-              {/* How it works Mini-Card */}
-              <div className="p-6 rounded-3xl bg-gradient-to-br from-civic-saffron/10 to-transparent border border-civic-saffron/20 group">
-                <div className="flex items-center gap-3 mb-3">
-                  <DynamicIcon name="Scale" className="w-5 h-5 text-civic-saffron" />
-                  <h4 className="font-bold text-sm text-civic-saffron uppercase tracking-widest">Legal Framework</h4>
-                </div>
-                <p className="text-xs text-civic-gray-300 leading-relaxed group-hover:text-white transition-colors">
-                  Our agent cross-references data with the <strong>Representation of the People Act (1951)</strong> 
-                  and the <strong>Election Commission's</strong> latest guidelines to ensure 100% procedural accuracy.
-                </p>
+                )}
               </div>
             </div>
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

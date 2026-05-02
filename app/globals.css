@@ -85,6 +85,47 @@
     border: 1px solid hsla(210, 20%, 98%, 0.08);
   }
 
+  .glass-card {
+    @apply relative overflow-hidden;
+    background: hsla(222, 65%, 11%, 0.6);
+    backdrop-filter: blur(16px);
+    border: 1px solid hsla(210, 20%, 98%, 0.05);
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      hsla(210, 20%, 98%, 0.1),
+      hsla(210, 20%, 98%, 0.02) 50%,
+      hsla(210, 20%, 98%, 0.05)
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Custom Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsla(210, 20%, 98%, 0.1);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsla(210, 20%, 98%, 0.2);
+  }
+
   /* Focus Rings (Accessibility) */
   .focus-ring {
     outline: none;
@@ -93,6 +134,41 @@
     outline: 2px solid var(--color-brand-saffron);
     outline-offset: 4px;
     border-radius: 4px;
+  }
+
+  /* Buttons */
+  .btn-gold {
+    @apply px-6 py-3 rounded-2xl font-bold transition-all duration-300 flex items-center gap-2 cursor-pointer;
+    background: linear-gradient(135deg, var(--color-brand-saffron), hsl(35, 100%, 50%));
+    color: var(--color-brand-navy);
+    box-shadow: 0 4px 15px rgba(255, 153, 51, 0.3);
+  }
+  .btn-gold:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 153, 51, 0.5);
+    filter: brightness(1.1);
+  }
+  .btn-gold:disabled {
+    @apply opacity-50 cursor-not-allowed grayscale;
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 rounded-2xl font-bold transition-all duration-300 flex items-center gap-2 cursor-pointer;
+    background: linear-gradient(135deg, var(--color-brand-blue), hsl(215, 85%, 45%));
+    color: white;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  }
+
+  /* Input */
+  .input-base {
+    @apply w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 transition-all duration-300 outline-none;
+    color: var(--color-brand-white);
+  }
+  .input-base:focus {
+    @apply border-brand-blue/50 ring-4 ring-brand-blue/10 bg-white/10;
+  }
+  .input-base:disabled {
+    @apply opacity-50 cursor-not-allowed;
   }
 }
 
