@@ -1,6 +1,6 @@
 # CivicGuide India 🇮🇳 — AI Electoral Assistant
 
-**CivicGuide India** is a state-of-the-art, agentic AI platform designed to empower the 97 crore voters of India. Built for the **Google Hack2Skill Prompt Wars**, it provides verified, personalized, and highly accessible guidance on the Indian electoral process using a multi-agent orchestration layer.
+**CivicGuide India** is a state-of-the-art, agentic AI platform designed to empower the 97 crore voters of India. It provides verified, personalized, and highly accessible guidance on the Indian electoral process using a sophisticated multi-agent orchestration layer.
 
 ---
 
@@ -19,14 +19,14 @@ A **"Cockpit for Citizens"** that acts as a personalized, agentic guide. Our per
 
 ## 🧠 2. Approach & Logic
 
-Our core innovation is the **Multi-Agent Reasoning Graph**. Unlike basic chatbots that use single-shot prompts, CivicGuide uses **LangGraph** to coordinate a team of specialized AI agents.
+Our core innovation is the **Multi-Agent Reasoning Graph**. Unlike basic chatbots that use single-shot prompts, CivicGuide uses **LangGraph** to coordinate a team of specialized AI agents for high-fidelity response generation.
 
 ### The Agentic Decision Loop
 1.  **Intent Routing**: The system identifies if the user needs general info, a polling location, or a fact-check.
-2.  **Personalization Node**: The system fetches the user's **Firebase Profile** (State, Constituency, Language) to tailor the response.
-3.  **Collaborative Analysis**: For complex queries, agents "talk" to each other:
-    -   **Researcher**: Fetches real-time facts via **Tavily Search**.
-    -   **Analyst**: Cross-references facts with the **RPA 1951** via **Legal RAG**.
+2.  **Personalization Node**: The system fetches the user's **Firebase Profile** (State, Constituency, Language) to tailor the response contextually.
+3.  **Collaborative Analysis**: For complex queries, agents collaborate in a structured DAG:
+    -   **Researcher**: Performs real-time investigation via **Tavily Search**.
+    -   **Analyst**: Cross-references findings with the **RPA 1951** via **Legal RAG**.
     -   **Synthesis**: Compiles the final report with a verified verdict.
 
 ### Logic Diagram (Mermaid)
@@ -51,14 +51,32 @@ graph TD
 
 ---
 
-## 🛠️ 3. How the Solution Works
+## ✨ 3. Core Features & Highlights
 
-### Step-by-Step Workflow
-1.  **Onboarding**: Users sign in via **Google Auth** and create a voter profile (State, District, Interests).
-2.  **Personalized Assistant**: Users chat with an AI that remembers their history (**Memory**) and knows their constituency.
-3.  **Fact-Check Engine**: Users paste suspicious election news. The AI investigates live sources and cites official ECI rules.
-4.  **Polling Finder**: Users search for their address. The app uses **Google Maps** and **ECI APIs** to show the exact booth on a map.
-5.  **Interactive Timeline**: A visual tracker of the 8 stages of the election, from nomination to results.
+### 🤖 Agentic AI Assistant
+-   **Contextual Memory**: Remembers previous interactions within a session (**Short-term**) and user preferences across sessions (**Long-term**).
+-   **Personalized Onboarding**: Tailors guidance based on the user's voter category (e.g., First-time, Senior Citizen, PWD).
+-   **Streaming Responses**: Real-time AI response delivery for a snappy, interactive experience.
+
+### 🔍 Fact-Check Engine
+-   **Rumor Verification**: Paste any claim or WhatsApp forward to get an evidence-backed verdict.
+-   **Legal Grounding**: Every check is cross-referenced with the **Representation of the People Act (1951)**.
+-   **Official Citations**: Direct links to ECI manuals and press notes provided for every verdict.
+
+### 🗺️ Polling Booth Finder
+-   **Visual Map Integration**: Uses **Google Maps** to show precise booth locations.
+-   **Official Data**: Integrated with the **Google Civic Information API** for official polling station details.
+-   **Places Autocomplete**: Easy address searching via Google Places.
+
+### ⏳ Interactive Election Timeline
+-   **8-Stage Tracker**: Visual guide from the Model Code of Conduct (MCC) to Government Formation.
+-   **Actionable Tips**: Key dates and procedural tips provided for each stage.
+-   **Dynamic Navigation**: "Ask AI about this stage" deep-links for immediate clarification.
+
+### 🌐 Multilingual & Inclusive
+-   **6 Indian Languages**: Support for Hindi, Tamil, Telugu, Bengali, Marathi, and English.
+-   **WCAG 2.1 AA**: Fully accessible with screen-reader support and high-contrast styling.
+-   **AIBadge Verification**: Transparently labels AI content with links to official sources.
 
 ---
 
@@ -66,46 +84,39 @@ graph TD
 
 | Service | Application |
 | :--- | :--- |
-| **Gemini 1.5 Flash** | Powers the core agentic reasoning, RAG, and fact-checking logic. |
-| **Firebase Auth** | Provides secure, one-tap login for citizens. |
-| **Firestore** | Stores persistent user profiles and long-term conversation memory. |
-| **Google Maps API** | Provides visual polling booth locating and places autocomplete. |
-| **Civic Info API** | Serves as the source of truth for official polling and candidate data. |
-| **Cloud Translation** | Real-time localization into 6 major Indian languages. |
-| **Cloud Run** | Scalable deployment to ensure the app handles the surge of election-day traffic. |
+| **Gemini 3.1 Flash** | Core reasoning, RAG, and high-speed chat orchestration. |
+| **Firebase Auth** | Secure, one-tap login for personalized citizen profiles. |
+| **Firestore** | Real-time database for user profiles and conversation memory. |
+| **Google Maps API** | Polling booth visualization and address autocomplete. |
+| **Civic Info API** | Source of truth for official polling and candidate data. |
+| **Cloud Translation** | Real-time localization into regional Indian languages. |
+| **Cloud Run** | Scalable, containerized deployment for high election-day traffic. |
 
 ---
 
-## 🛡️ 5. Security & Accessibility
+## 🛡️ 5. Security & Trust
 
--   **Safety First**: Multi-layer sanitization to prevent XSS and Prompt Injection.
--   **Strict Neutrality**: System prompts are hard-coded to maintain absolute non-partisanship.
--   **WCAG 2.1 AA**: Screen-reader support, high-contrast themes, and keyboard navigation.
--   **Privacy**: User data is encrypted and used only to personalize the electoral experience.
-
----
-
-## 📋 6. Assumptions Made
-
-1.  **Official Sources**: We assume the **ECI (Election Commission of India)** is the definitive source of truth for all data tools.
-2.  **Internet Connectivity**: While lightweight, we assume a basic mobile data connection for real-time AI features.
-3.  **Data Caching**: Per Google ToS, we cache Civic API data for a maximum of 1 hour to ensure fresh, accurate info.
+-   **XSS Protection**: Robust input sanitization via `sanitizeInput()` on all user data.
+-   **Rate Limiting**: 20 requests/minute per IP to prevent service abuse.
+-   **Data Privacy**: All personal context is encrypted and stored securely in Firebase.
+-   **Neutrality Promise**: Hard-coded system instructions ensure absolute non-partisanship.
 
 ---
 
-## 🏁 7. Getting Started
+## 🏁 6. Getting Started
 
 ```bash
-# Clone the repo
+# Clone the repository
 git clone https://github.com/SouravSohal/electoral_assistant.git
 
 # Install Dependencies
 npm install --legacy-peer-deps
 
-# Configure .env.local with GEMINI_API_KEY, FIREBASE_*, etc.
+# Configure .env.local (Gemini, Firebase, Google Cloud keys)
 
-# Run Dev Server
+# Run Development Server
 npm run dev
 ```
 
-Built for the **Google Hack2Skill Prompt Wars** | Helping India Vote, One Prompt at a Time.
+---
+**CivicGuide India** | Helping India Vote, One Prompt at a Time. | [voters.eci.gov.in](https://voters.eci.gov.in)
