@@ -38,23 +38,26 @@ graph TD
 
 ## 🔄 Data Flow Analysis
 
-### AI Agent Interaction (DFD)
-
-The "Agentic" nature of the application comes from how Gemini interacts with external tools.
+### Multi-Agent Fact-Checking Graph (LangGraph)
+The core intelligence of the application is a **Directed Acyclic Graph (DAG)** that orchestrates specialized agents:
 
 ```mermaid
-flowchart LR
-    User((User)) -- "Query / Address" --> App[CivicGuide App]
-    App -- "Sanitized Input" --> AI[Gemini Agent]
-    AI -- "Tool Call" --> CivicAPI[Civic Info API]
-    CivicAPI -- "Polling Data" --> AI
-    AI -- "Natural Language Response" --> App
-    App -- "Formatted Result" --> User
+graph LR
+    Start([START]) --> Researcher[Researcher Agent]
+    Researcher --> Analyst[Analyst Agent]
+    Analyst --> Synthesis[Synthesis Agent]
+    Synthesis --> End([END])
+    
+    subgraph Tools
+        Researcher --- Search[Tavily Search]
+        Analyst --- RAG[Legal RAG / RPA 1951]
+    end
 ```
 
-1.  **Sanitization**: All user input is stripped of HTML and scripts via `sanitizeInput()` before reaching the AI.
-2.  **Contextual Routing**: The agent decides whether to answer from internal knowledge (e.g., "What is NOTA?") or fetch real-time data (e.g., "Where is my polling booth?").
-3.  **Proxy Layer**: All sensitive API keys are kept server-side. The frontend communicates with `/api/*` routes.
+1.  **Researcher Agent**: Investigates the query via **Tavily Search** to find live news, official ECI press notes, and verified sources.
+2.  **Analyst Agent**: Cross-references findings against the **Representation of the People Act (1951)** and the **Model Code of Conduct** using a local RAG knowledge base.
+3.  **Synthesis Agent**: Merges research and legal analysis into a neutral, authoritative report with a clear **Verdict**.
+4.  **Short-term Memory**: Managed via **LangGraph Checkpointers** using a `thread_id` to maintain conversation context.
 
 ## 🛡️ Security & Reliability
 

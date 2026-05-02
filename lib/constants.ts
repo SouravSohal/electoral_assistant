@@ -412,11 +412,17 @@ export const SUGGESTED_QUESTIONS = [
 // --- Navigation Items ---
 export const NAV_ITEMS = [
   { href: "/", label: "Home", id: "nav-home" },
-  { href: "/assistant", label: "AI Assistant", id: "nav-assistant" },
-  { href: "/timeline", label: "Election Timeline", id: "nav-timeline" },
-  { href: "/find-polling", label: "Find Polling Booth", id: "nav-polling" },
-  { href: "/ballot", label: "Ballot Preview", id: "nav-ballot" },
-  { href: "/how-to-vote", label: "How to Vote", id: "nav-how-to-vote" },
+  { href: "/timeline", label: "Timeline", id: "nav-timeline" },
+  { href: "/verify", label: "Fact-Check", id: "nav-verify" },
+  { href: "/find-polling", label: "Polling Booth", id: "nav-polling" },
+  { 
+    label: "Guide", 
+    id: "nav-guide",
+    children: [
+      { href: "/how-to-vote", label: "How to Vote", id: "nav-how-to-vote" },
+      { href: "/ballot", label: "Ballot Preview", id: "nav-ballot" },
+    ]
+  },
 ] as const;
 
 // --- Feature Cards ---
@@ -428,6 +434,15 @@ export const FEATURES = [
     description:
       "Ask anything about Indian elections — voter registration, EVM, MCC, NOTA, or constituency rules — and get instant, non-partisan answers in your language.",
     color: "blue",
+  },
+  {
+    id: "feature-verify",
+    icon: "ShieldCheck",
+    title: "AI Fact-Checker",
+    description:
+      "Verify election-related rumors or 'WhatsApp forwards' using AI trained on ECI guidelines and procedural rules.",
+    color: "green",
+    href: "/verify",
   },
   {
     id: "feature-timeline",

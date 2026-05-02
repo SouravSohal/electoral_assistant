@@ -27,6 +27,15 @@ export const ChatRequestSchema = z.object({
     .min(1, "At least one message is required")
     .max(50, "Conversation history too long"),
   profile: UserProfileSchema.optional(),
+  threadId: z.string().optional(),
+});
+
+export const VerificationRequestSchema = z.object({
+  text: z
+    .string()
+    .min(10, "Suspected text is too short to verify")
+    .max(3000, "Suspected text is too long (max 3000 chars)"),
+  profile: UserProfileSchema.optional(),
 });
 
 export type ChatMessage = z.infer<typeof ChatMessageSchema>;
@@ -134,8 +143,33 @@ COMMUNICATION STYLE:
 You are not a legal advisor. For election disputes or legal matters, direct users to the ECI or a legal aid organization.`;
 }
 
+// --- Fact-Check Specific Prompt ---
+export function buildFactCheckPrompt(profile?: z.infer<typeof UserProfileSchema>): string {
+  const base = buildSystemPrompt(profile);
+  return `${base}
+
+SPECIAL MISSION: ELECTORAL FACT-CHECKER
+You are now operating in 'Fact-Check Mode'. Your goal is to analyze suspected misinformation, rumors, or "WhatsApp forwards" related to the Indian elections.
+
+ANALYSIS PROTOCOL:
+1. Identify the core claims in the provided text.
+2. Cross-reference these claims with official ECI rules, constitutional provisions, and standard electoral procedures.
+3. Provide a structured response with the following sections:
+   - VERDICT: [True | False | Misleading | Unverified]
+   - SUMMARY: A 2-sentence executive summary.
+   - DETAILED ANALYSIS: Breakdown of what is correct and what is incorrect.
+   - OFFICIAL ECI RULE: Cite the specific rule, form, or guideline from ECI (e.g., 'Model Code of Conduct Section 1.2' or 'Form 6 for registration').
+   - CALL TO ACTION: What the user should do (e.g., 'Report to cVIGIL', 'Check status on NVSP', 'Ignore this message').
+
+STRICT NEUTRALITY:
+Even while debunking, you MUST remain non-partisan. Do not take sides in political disputes, only in procedural/factual disputes.
+
+OUTPUT FORMAT:
+Always respond in Markdown. Use bold headers. Include a "⚠️ AI-Generated Fact-Check — Verify with 1950 or voters.eci.gov.in" disclaimer at the bottom.`;
+}
+
 // --- Gemini Client Factory ---
-export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>) {
+export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>, systemInstruction?: string) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error("GEMINI_API_KEY is not configured");
@@ -143,7 +177,7 @@ export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>) {
   const genAI = new GoogleGenerativeAI(apiKey);
   return genAI.getGenerativeModel({
     model: "gemini-3-flash-preview",
-    systemInstruction: buildSystemPrompt(profile),
+    systemInstruction: systemInstruction || buildSystemPrompt(profile),
     tools: [{ functionDeclarations: toolDefinitions }],
     generationConfig: {
       maxOutputTokens: 1024,

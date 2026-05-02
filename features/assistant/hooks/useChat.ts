@@ -19,6 +19,19 @@ export function useChat(): UseChatReturn {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const threadIdRef = useRef<string | null>(null);
+
+  // Initialize or retrieve thread ID
+  if (typeof window !== "undefined" && !threadIdRef.current) {
+    const existing = localStorage.getItem("civic_thread_id");
+    if (existing) {
+      threadIdRef.current = existing;
+    } else {
+      const newId = Math.random().toString(36).substring(2, 15);
+      localStorage.setItem("civic_thread_id", newId);
+      threadIdRef.current = newId;
+    }
+  }
 
   const sendMessage = useCallback(async (text: string) => {
     if (!text.trim() || isLoading) return;
@@ -48,7 +61,10 @@ export function useChat(): UseChatReturn {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: updatedMessages }),
+        body: JSON.stringify({ 
+          messages: updatedMessages,
+          threadId: threadIdRef.current 
+        }),
         signal: abortRef.current.signal,
       });
 
@@ -100,6 +116,9 @@ export function useChat(): UseChatReturn {
 
   const clearChat = useCallback(() => {
     abortRef.current?.abort();
+    const newId = Math.random().toString(36).substring(2, 15);
+    localStorage.setItem("civic_thread_id", newId);
+    threadIdRef.current = newId;
     setMessages([]);
     setError(null);
     setIsLoading(false);

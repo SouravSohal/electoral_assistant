@@ -71,6 +71,36 @@ export function Navbar() {
             isScrolled ? "bg-[hsla(210,20%,98%,0.02)] border border-[hsla(210,20%,98%,0.05)]" : ""
           )}>
             {NAV_ITEMS.map((item) => {
+              if ("children" in item) {
+                return (
+                  <li key={item.id} className="relative group/dropdown">
+                    <button
+                      className={cn(
+                        "focus-ring flex items-center gap-1.5 px-4 py-2 rounded-full text-[15px] font-medium transition-colors duration-200 text-[var(--color-brand-muted)] hover:text-white hover:bg-[hsla(210,20%,98%,0.05)]"
+                      )}
+                    >
+                      {item.label}
+                      <ChevronDown size={14} className="group-hover/dropdown:rotate-180 transition-transform duration-200" />
+                    </button>
+                    
+                    {/* Dropdown Menu */}
+                    <div className="absolute top-full left-0 mt-2 w-48 opacity-0 translate-y-2 pointer-events-none group-hover/dropdown:opacity-100 group-hover/dropdown:translate-y-0 group-hover/dropdown:pointer-events-auto transition-all duration-200 z-50">
+                      <div className="glass-panel border border-[hsla(210,20%,98%,0.1)] p-2 shadow-2xl">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.id}
+                            href={child.href}
+                            className="block px-3 py-2 rounded-lg text-sm text-[var(--color-brand-muted)] hover:text-white hover:bg-[hsla(210,20%,98%,0.05)] transition-all"
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </li>
+                );
+              }
+
               const isActive = pathname === item.href;
               return (
                 <li key={item.id}>
@@ -178,6 +208,35 @@ export function Navbar() {
         <div className="glass-panel border-[hsla(210,20%,98%,0.1)] bg-[hsla(222,65%,8%,0.95)] p-5 shadow-2xl rounded-3xl">
           <ul role="list" className="flex flex-col gap-1">
             {NAV_ITEMS.map((item) => {
+              if ("children" in item) {
+                return (
+                  <li key={item.id} className="flex flex-col">
+                    <div className="px-5 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-brand-gray-500)] mt-2">
+                      {item.label}
+                    </div>
+                    {item.children.map((child) => {
+                      const isActive = pathname === child.href;
+                      return (
+                        <Link
+                          key={child.id}
+                          href={child.href}
+                          tabIndex={isMenuOpen ? 0 : -1}
+                          className={cn(
+                            "focus-ring flex items-center px-5 py-3.5 rounded-2xl text-sm font-bold uppercase tracking-wider transition-all duration-300",
+                            isActive
+                              ? "bg-[hsla(215,85%,55%,0.15)] text-[var(--color-brand-blue)] border border-[hsla(215,85%,55%,0.2)]"
+                              : "text-[var(--color-brand-muted)] hover:text-white hover:bg-[hsla(210,20%,98%,0.05)] border border-transparent"
+                          )}
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {child.label}
+                        </Link>
+                      );
+                    })}
+                  </li>
+                );
+              }
+
               const isActive = pathname === item.href;
               return (
                 <li key={item.id}>

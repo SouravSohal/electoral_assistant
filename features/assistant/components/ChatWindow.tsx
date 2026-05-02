@@ -5,9 +5,12 @@ import { Send, Loader2, AlertCircle } from "lucide-react";
 import { useChat } from "@/features/assistant/hooks/useChat";
 import { MessageBubble } from "./MessageBubble";
 import { SuggestedQuestions } from "./SuggestedQuestions";
+import { useAuth } from "@/hooks/useAuth";
+import Link from "next/link";
 
 export function ChatWindow({ initialQuestion }: { initialQuestion?: string }) {
   const { messages, isLoading, error, sendMessage } = useChat();
+  const { user, profile, loading: authLoading } = useAuth();
   const [input, setInput] = useState("");
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
@@ -51,6 +54,27 @@ export function ChatWindow({ initialQuestion }: { initialQuestion?: string }) {
               Get instant, verified answers about voter registration, election stages, and polling procedures based on official ECI guidelines.
             </p>
             <SuggestedQuestions onSelect={handleSuggestSelect} />
+            
+            {/* Personalization Mandatory Alert */}
+            {!authLoading && (!user || !profile) && (
+              <div className="mt-8 p-4 rounded-xl bg-[hsla(28,92%,58%,0.1)] border border-[hsla(28,92%,58%,0.3)] max-w-md w-full animate-[fade-in-up_0.5s_ease-out]">
+                <div className="flex items-start gap-3">
+                  <AlertCircle size={20} className="text-[var(--color-brand-saffron)] shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="text-sm font-bold text-[var(--color-brand-saffron)] mb-1">Improve Personalization</h3>
+                    <p className="text-xs text-[var(--color-brand-muted)] leading-relaxed mb-3">
+                      To get information tailored to your state and constituency, please sign in and complete your voter profile.
+                    </p>
+                    <Link 
+                      href="/login"
+                      className="text-xs font-bold py-1.5 px-3 rounded-lg bg-[var(--color-brand-saffron)] text-black hover:opacity-90 transition-opacity inline-block"
+                    >
+                      Complete Profile
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <div className="flex flex-col gap-6 md:gap-8 pb-4">

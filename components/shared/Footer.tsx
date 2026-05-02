@@ -33,16 +33,30 @@ export function Footer() {
           <div>
             <h4 className="text-white font-bold tracking-wider uppercase text-xs mb-6">Platform</h4>
             <ul className="space-y-4">
-              {NAV_ITEMS.map((item) => (
-                <li key={item.id}>
-                  <Link 
-                    href={item.href} 
-                    className="focus-ring text-sm text-[var(--color-brand-muted)] hover:text-white transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {NAV_ITEMS.map((item) => {
+                if ("children" in item) {
+                  return item.children.map((child) => (
+                    <li key={child.id}>
+                      <Link 
+                        href={child.href} 
+                        className="focus-ring text-sm text-[var(--color-brand-muted)] hover:text-white transition-colors"
+                      >
+                        {child.label}
+                      </Link>
+                    </li>
+                  ));
+                }
+                return (
+                  <li key={item.id}>
+                    <Link 
+                      href={item.href} 
+                      className="focus-ring text-sm text-[var(--color-brand-muted)] hover:text-white transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 

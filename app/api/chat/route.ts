@@ -1,16 +1,13 @@
-/**
- * app/api/chat/route.ts
- * Server-side Gemini streaming endpoint.
- * POST /api/chat — Gemini 1.5 Flash streaming response.
- * Rate limiting handled by proxy.ts (20 req/min per IP).
- */
 import { NextRequest } from "next/server";
-import { ChatRequestSchema, createGeminiModel, sanitizeInput } from "@/lib/gemini";
-import { toolExecutors } from "@/lib/tools";
-import { ZodError } from "zod";
+import { ChatRequestSchema, sanitizeInput } from "@/lib/gemini";
+import { runAssistant } from "@/agents/core/assistant-graph";
 
 export const runtime = "nodejs";
 
+/**
+ * POST /api/chat
+ * Orchestrated Multi-Agent Assistant endpoint.
+ */
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -23,80 +20,44 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    const { messages, profile } = validation.data;
+    const { messages, profile, threadId } = validation.data;
 
-    const lastMessage = messages[messages.length - 1];
-    const sanitizedText = sanitizeInput(lastMessage.parts[0].text);
-    
-    const history = messages.slice(0, -1).map((msg) => ({
-      role: msg.role,
-      parts: msg.parts,
-    }));
-
-    const model = createGeminiModel(profile);
-    const chat = model.startChat({ history });
-
-    // --- Agentic Tool Loop ---
-    let result = await chat.sendMessage(sanitizedText);
-    let response = result.response;
-    let parts = response.candidates?.[0].content.parts || [];
-    
-    // Check for function calls
-    const functionCalls = parts.filter(part => part.functionCall);
-    
-    if (functionCalls.length > 0) {
-      const toolResults = [];
-      for (const call of functionCalls) {
-        const toolName = call.functionCall?.name as keyof typeof toolExecutors;
-        const args = call.functionCall?.args;
-        
-        if (toolExecutors[toolName]) {
-          const output = await (toolExecutors[toolName] as any)(args);
-          toolResults.push({
-            functionResponse: {
-              name: toolName,
-              response: output
-            }
-          });
-        }
-      }
-
-      // Final streaming response after tool execution
-      const finalResult = await chat.sendMessageStream(toolResults);
-      return new Response(
-        new ReadableStream({
-          async start(controller) {
-            const encoder = new TextEncoder();
-            try {
-              for await (const chunk of finalResult.stream) {
-                const text = chunk.text();
-                if (text) controller.enqueue(encoder.encode(text));
-              }
-            } catch (e) {
-              controller.error(e);
-            } finally {
-              controller.close();
-            }
-          },
-        }),
-        { headers: { "Content-Type": "text/plain; charset=utf-8" } }
-      );
+    // 2. Personalization Enforcement
+    // If profile is missing, we still chat but with a placeholder and a reminder.
+    if (!profile) {
+      console.warn("No user profile provided for chat. Personalization will be limited.");
     }
 
-    // No tools called, but we might have text already from the first sendMessage
-    const initialText = response.text();
-    return new Response(
-      new ReadableStream({
-        start(controller) {
-          if (initialText) controller.enqueue(new TextEncoder().encode(initialText));
-          controller.close();
-        },
-      }),
-      { headers: { "Content-Type": "text/plain; charset=utf-8" } }
+    // 3. Execute Multi-Agent Assistant
+    const tId = threadId || "anonymous-default";
+    const { response } = await runAssistant(
+      null, // userId could be added if we had auth session in server
+      profile,
+      messages,
+      tId
     );
 
-  } catch (error) {
-    console.error("[/api/chat] Agent Error:", error);
-    return Response.json({ error: "Failed to process agentic request." }, { status: 500 });
+    // 4. Stream response to client (simulated for compatibility)
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(encoder.encode(response));
+        controller.close();
+      },
+    });
+
+    return new Response(stream, {
+      headers: { 
+        "Content-Type": "text/plain; charset=utf-8",
+        "X-Thread-ID": tId
+      },
+    });
+
+  } catch (error: any) {
+    console.error("[/api/chat] Agentic Assistant Error:", error);
+    return Response.json(
+      { error: "Failed to process personalized request.", details: error.message }, 
+      { status: 500 }
+    );
   }
 }
