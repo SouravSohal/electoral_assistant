@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import { Navbar } from "@/components/shared/Navbar";
-import { Footer } from "@/components/shared/Footer";
-import { BallotPreview } from "@/components/ballot/BallotPreview";
+import { Navbar } from "@/components/ui/Navbar";
+import { Footer } from "@/components/ui/Footer";
+import { BallotPreview } from "@/features/ballot/components/BallotPreview";
 import { Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {

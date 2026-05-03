@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
-import { PollingLocation } from "@/hooks/useCivicData";
+import { PollingLocation } from "@/features/polling/hooks/useCivicData";
 import { Loader2, AlertCircle, ExternalLink } from "lucide-react";
 
 interface MapProps {

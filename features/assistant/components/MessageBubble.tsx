@@ -1,4 +1,4 @@
-import { AIBadge } from "@/components/shared/AIBadge";
+import { AIBadge } from "@/components/ui/AIBadge";
 import { cn } from "@/lib/utils";
 import { User, BotMessageSquare } from "lucide-react";
 import ReactMarkdown from "react-markdown";

@@ -168,13 +168,32 @@ OUTPUT FORMAT:
 Always respond in Markdown. Use bold headers. Include a "⚠️ AI-Generated Fact-Check — Verify with 1950 or voters.eci.gov.in" disclaimer at the bottom.`;
 }
 
-// --- Gemini Client Factory ---    gemini-3-flash-preview
+// --- Semantic Cache & Throttling ---
+const responseCache = new Map<string, { content: any; timestamp: number }>();
+const CACHE_TTL = 1000 * 60 * 30; // 30 minutes
+let lastRequestTime = 0;
+const MIN_REQUEST_GAP = 2000; // 2 seconds between requests to protect RPM
+
+/**
+ * Throttles requests to respect RPM limits.
+ */
+async function throttleRequest() {
+  const now = Date.now();
+  const timeSinceLast = now - lastRequestTime;
+  if (timeSinceLast < MIN_REQUEST_GAP) {
+    const delay = MIN_REQUEST_GAP - timeSinceLast;
+    await new Promise((resolve) => setTimeout(resolve, delay));
+  }
+  lastRequestTime = Date.now();
+}
+
+// --- Gemini Client Factory ---
 export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>, systemInstruction?: string) {
   const apiKey = process.env.GEMINI_API_KEY || "BUILD_TIME_DUMMY_KEY";
-
   const genAI = new GoogleGenerativeAI(apiKey);
-  return genAI.getGenerativeModel({
-    model: "gemini-3-flash-preview",
+  
+  const model = genAI.getGenerativeModel({
+    model: "gemini-2.5-flash", // Stable production model
     systemInstruction: systemInstruction || buildSystemPrompt(profile),
     tools: [{ functionDeclarations: toolDefinitions }],
     generationConfig: {
@@ -197,4 +216,30 @@ export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>, s
       },
     ],
   });
+
+  // Wrap the generateContent function with caching and throttling
+  const originalGenerateContent = model.generateContent.bind(model);
+  
+  model.generateContent = async (request: any, ...args: any[]) => {
+    // 1. Check Cache
+    const cacheKey = JSON.stringify(request);
+    const cached = responseCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      console.log("[Gemini Cache] Returning cached response");
+      return cached.content;
+    }
+
+    // 2. Throttle
+    await throttleRequest();
+
+    // 3. Execute
+    const result = await originalGenerateContent(request, ...args);
+    
+    // 4. Save to Cache
+    responseCache.set(cacheKey, { content: result, timestamp: Date.now() });
+    
+    return result;
+  };
+
+  return model;
 }

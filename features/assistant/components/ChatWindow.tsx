@@ -5,7 +5,7 @@ import { Send, Loader2, AlertCircle } from "lucide-react";
 import { useChat } from "@/features/assistant/hooks/useChat";
 import { MessageBubble } from "./MessageBubble";
 import { SuggestedQuestions } from "./SuggestedQuestions";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/features/profile/hooks/useAuth";
 import Link from "next/link";
 
 export function ChatWindow({ initialQuestion }: { initialQuestion?: string }) {

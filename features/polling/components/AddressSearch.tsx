@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Search, MapPin, Loader2 } from "lucide-react";
-import { useGeolocation } from "@/hooks/useGeolocation";
+import { useGeolocation } from "@/features/polling/hooks/useGeolocation";
 import { cn } from "@/lib/utils";
 
 interface AddressSearchProps {

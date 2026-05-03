@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { Navbar } from "@/components/shared/Navbar";
-import { Footer } from "@/components/shared/Footer";
+import { Navbar } from "@/components/ui/Navbar";
+import { Footer } from "@/components/ui/Footer";
 import PollingFinderClient from "./PollingFinderClient";
 
 export const metadata: Metadata = {

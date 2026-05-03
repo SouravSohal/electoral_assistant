@@ -1,5 +1,5 @@
-import { Navbar } from "@/components/shared/Navbar";
-import { Footer } from "@/components/shared/Footer";
+import { Navbar } from "@/components/ui/Navbar";
+import { Footer } from "@/components/ui/Footer";
 import { ElectionTimeline } from "@/features/timeline/components/ElectionTimeline";
 
 export const metadata = {

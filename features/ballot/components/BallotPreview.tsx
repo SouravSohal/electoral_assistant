@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { MOCK_CANDIDATES, NOTA_CANDIDATE, Candidate } from "@/lib/mock-candidates";
-import { DynamicIcon } from "@/components/shared/DynamicIcon";
+import { DynamicIcon } from "@/components/ui/DynamicIcon";
 import { cn } from "@/lib/utils";
 import { Info, ShieldAlert, CheckCircle2, Volume2, VolumeX } from "lucide-react";
 

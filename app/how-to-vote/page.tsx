@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import { Navbar } from "@/components/shared/Navbar";
-import { Footer } from "@/components/shared/Footer";
-import { DynamicIcon } from "@/components/shared/DynamicIcon";
+import { Navbar } from "@/components/ui/Navbar";
+import { Footer } from "@/components/ui/Footer";
+import { DynamicIcon } from "@/components/ui/DynamicIcon";
 import { HOW_TO_VOTE_STEPS, HOW_TO_VOTE_STEPS_METADATA } from "@/lib/constants";
 import Link from "next/link";
 import { ArrowRight, Sparkles, ExternalLink } from "lucide-react";

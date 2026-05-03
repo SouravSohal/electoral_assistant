@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { MOCK_EVM_CANDIDATES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { DynamicIcon } from "@/components/shared/DynamicIcon";
+import { DynamicIcon } from "@/components/ui/DynamicIcon";
 
 export function EVMMachine() {
   const [selectedCandidate, setSelectedCandidate] = useState<string | null>(null);

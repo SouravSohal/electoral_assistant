@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Navbar } from "@/components/shared/Navbar";
-import { DynamicIcon } from "@/components/shared/DynamicIcon";
+import { Navbar } from "@/components/ui/Navbar";
+import { DynamicIcon } from "@/components/ui/DynamicIcon";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 

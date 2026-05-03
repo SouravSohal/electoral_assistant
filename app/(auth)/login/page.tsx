@@ -8,9 +8,9 @@ import {
   onAuthStateChanged 
 } from "firebase/auth";
 import { getFirebaseAuth } from "@/lib/firebase";
-import { Navbar } from "@/components/shared/Navbar";
-import { Footer } from "@/components/shared/Footer";
-import { DynamicIcon } from "@/components/shared/DynamicIcon";
+import { Navbar } from "@/components/ui/Navbar";
+import { Footer } from "@/components/ui/Footer";
+import { DynamicIcon } from "@/components/ui/DynamicIcon";
 import { cn } from "@/lib/utils";
 
 export default function LoginPage() {

@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
-import { AccessibilityToolbar } from "@/components/shared/AccessibilityToolbar";
-import { OnboardingWrapper } from "@/components/profile/OnboardingWrapper";
+import { AccessibilityToolbar } from "@/components/ui/AccessibilityToolbar";
+import { OnboardingWrapper } from "@/features/profile/components/OnboardingWrapper";
 
 export const metadata: Metadata = {
   title: {

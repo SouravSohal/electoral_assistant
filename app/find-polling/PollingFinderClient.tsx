@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { AddressSearch } from "@/components/map/AddressSearch";
-import { PollingMap } from "@/components/map/PollingMap";
-import { useCivicData } from "@/hooks/useCivicData";
+import { AddressSearch } from "@/features/polling/components/AddressSearch";
+import { PollingMap } from "@/features/polling/components/PollingMap";
+import { useCivicData } from "@/features/polling/hooks/useCivicData";
 import { MapPin, Info, ArrowRight, ExternalLink, Bot, Star, Search } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";

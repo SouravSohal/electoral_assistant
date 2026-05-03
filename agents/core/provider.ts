@@ -7,7 +7,7 @@ export function createAgentModel(temperature = 0) {
   const apiKey = process.env.GEMINI_API_KEY || "BUILD_TIME_DUMMY_KEY";
 
   return new ChatGoogleGenerativeAI({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.5-flash",
     apiKey: apiKey,
     temperature: temperature,
     maxOutputTokens: 2048,

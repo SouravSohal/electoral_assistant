@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 import { Vote, Menu, X, Sparkles, LogIn, LogOut, User as UserIcon, ChevronDown } from "lucide-react";
 import { APP_NAME, NAV_ITEMS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
-import { useAuth } from "@/hooks/useAuth";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
+import { useAuth } from "@/features/profile/hooks/useAuth";
 
 export function Navbar() {
   const pathname = usePathname();

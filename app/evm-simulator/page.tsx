@@ -1,7 +1,7 @@
-import { Navbar } from "@/components/shared/Navbar";
-import { Footer } from "@/components/shared/Footer";
-import { EVMMachine } from "@/components/evm/EVMMachine";
-import { DynamicIcon } from "@/components/shared/DynamicIcon";
+import { Navbar } from "@/components/ui/Navbar";
+import { Footer } from "@/components/ui/Footer";
+import { EVMMachine } from "@/features/evm/components/EVMMachine";
+import { DynamicIcon } from "@/components/ui/DynamicIcon";
 
 export const metadata = {
   title: "Interactive EVM Simulator | CivicGuide India",
@@ -38,7 +38,7 @@ export default function EVMSimulatorPage() {
           <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="glass-card p-6 border-t-4 border-civic-saffron">
               <div className="w-10 h-10 rounded-full bg-civic-saffron/20 flex items-center justify-center mb-4">
-                <DynamicIcon name="HandPointer" className="text-civic-saffron" />
+                <DynamicIcon name="Pointer" className="text-civic-saffron" />
               </div>
               <h3 className="text-lg font-bold mb-2">1. Press the Blue Button</h3>
               <p className="text-sm text-civic-gray-300 leading-relaxed">

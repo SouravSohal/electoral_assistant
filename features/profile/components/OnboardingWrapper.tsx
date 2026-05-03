@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/features/profile/hooks/useAuth";
 import { ProfileOnboarding } from "./ProfileOnboarding";
 import { useEffect, useState } from "react";
 

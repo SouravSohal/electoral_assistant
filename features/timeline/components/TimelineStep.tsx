@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { TimelineStage } from "@/lib/constants";
-import { DynamicIcon } from "@/components/shared/DynamicIcon";
+import { DynamicIcon } from "@/components/ui/DynamicIcon";
 import { 
   ExternalLink, 
   BotMessageSquare, 
@@ -15,7 +15,7 @@ import {
   Loader2,
   Tablet
 } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/features/profile/hooks/useAuth";
 import { toggleElectionReminder } from "@/lib/firebase";
 import { cn } from "@/lib/utils";
 

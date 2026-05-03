@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { ELECTION_TIMELINE_STAGES } from "@/lib/constants";
 import { TimelineStep } from "./TimelineStep";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/features/profile/hooks/useAuth";
 import { getElectionReminders } from "@/lib/firebase";
 
 export function ElectionTimeline() {
