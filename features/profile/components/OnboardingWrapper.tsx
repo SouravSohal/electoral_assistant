@@ -9,15 +9,8 @@ export function OnboardingWrapper() {
   const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
-    console.log("Onboarding Check:", { 
-      loading, 
-      user: !!user, 
-      profileId: profile ? "Found" : "Missing",
-      profileCompleted: profile?.onboardingCompleted 
-    });
     
     if (!loading && user && !profile?.onboardingCompleted) {
-      console.log("Triggering onboarding modal visibility");
       setShowOnboarding(true);
     } else {
       setShowOnboarding(false);

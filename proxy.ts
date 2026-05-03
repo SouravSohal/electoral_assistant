@@ -1,7 +1,7 @@
 /**
- * middleware.ts
- * Next.js Middleware — runs on Edge Runtime before each request.
- * Handles: rate limiting stubs, basic auth protection for API routes.
+ * proxy.ts
+ * Next.js Proxy (Custom Middleware) — runs on Edge Runtime before each request.
+ * Handles: rate limiting for AI endpoints.
  */
 import { NextResponse, type NextRequest } from "next/server";
 

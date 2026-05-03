@@ -97,7 +97,6 @@ export function ProfileOnboarding({ user, onComplete }: ProfileOnboardingProps) 
       } as UserProfile;
 
       // Validate with Zod
-      console.log("Validating profile data:", profileData);
       const result = UserProfileSchema.safeParse(profileData);
       
       if (!result.success) {

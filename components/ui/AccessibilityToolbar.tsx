@@ -51,7 +51,6 @@ export function AccessibilityToolbar() {
 
   // Load preferences
   useEffect(() => {
-    console.log("AccessibilityToolbar mounted");
     const savedSize = localStorage.getItem("a11y-font-size") as FontSize;
     const savedContrast = localStorage.getItem("a11y-high-contrast") === "true";
     const savedDyslexic = localStorage.getItem("a11y-dyslexic") === "true";

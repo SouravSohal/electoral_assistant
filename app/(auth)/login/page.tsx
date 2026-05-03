@@ -49,7 +49,6 @@ export default function LoginPage() {
       
       if (err.code === "auth/user-cancelled") {
         // Silent or subtle notification - user closed the popup
-        console.log("User cancelled the login flow.");
       } else if (err.message?.includes("IdP denied access")) {
         alert(
           "Access denied by Google. This often means:\n" +

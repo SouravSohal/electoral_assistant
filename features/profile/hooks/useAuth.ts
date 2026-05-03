@@ -16,15 +16,11 @@ export function useAuth() {
         if (user) {
           try {
             const auth = getFirebaseAuth();
-            console.log("Auth Project ID (Config):", auth.app.options.projectId);
-            console.log("Current User UID:", user.uid);
-            console.log("Fetching profile for user:", user.uid);
             
             // Give Firestore a moment to sync the auth token
             await new Promise(resolve => setTimeout(resolve, 800)); // Increased delay slightly
             
             const profileData = await getUserProfile(user.uid);
-            console.log("Profile data fetched:", profileData);
             setProfile(profileData);
           } catch (e: any) {
             console.error("Failed to fetch profile:", e);
