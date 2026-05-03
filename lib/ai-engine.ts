@@ -1,6 +1,4 @@
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
-import { z } from "zod";
-import { UserProfileSchema } from "./schemas";
 
 /**
  * Custom error class for Civic AI operations

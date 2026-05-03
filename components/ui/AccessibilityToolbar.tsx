@@ -109,9 +109,10 @@ export function AccessibilityToolbar() {
           <h2 className="text-sm font-black uppercase tracking-widest text-white">Accessibility</h2>
           <button 
             onClick={resetAll}
+            aria-label="Reset all accessibility settings"
             className="text-[10px] uppercase font-bold text-[var(--color-brand-muted)] hover:text-[var(--color-brand-saffron)] flex items-center gap-1 transition-colors"
           >
-            <RotateCcw size={12} />
+            <RotateCcw size={12} aria-hidden="true" />
             Reset
           </button>
         </div>

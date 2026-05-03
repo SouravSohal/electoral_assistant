@@ -26,14 +26,15 @@ export function createAssistantGraph() {
 const assistantGraph = createAssistantGraph();
 
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
+import { UserProfile } from "@/lib/schemas";
 
 /**
  * Entry point for the General Assistant.
  */
 export async function runAssistant(
   userId: string | null, 
-  userProfile: any, 
-  rawMessages: any[],
+  userProfile: UserProfile | null | undefined, 
+  rawMessages: { role: string; content?: string; parts?: { text: string }[] }[],
   threadId: string
 ) {
   // Convert raw messages to LangChain format

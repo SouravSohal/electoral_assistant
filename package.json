@@ -20,7 +20,6 @@
     "@langchain/core": "^1.1.43",
     "@langchain/google-genai": "^2.1.30",
     "@langchain/langgraph": "^1.2.9",
-    "@langchain/openai": "^1.4.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "critters": "^0.0.23",

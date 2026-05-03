@@ -84,7 +84,7 @@ export async function resetFirestore(): Promise<void> {
   const currentDb = getFirebaseDb();
   await terminate(currentDb);
   await clearIndexedDbPersistence(currentDb);
-  // @ts-ignore
+  // @ts-expect-error - db is intentionally being reset to undefined for singleton re-init
   db = undefined;
 }
 
