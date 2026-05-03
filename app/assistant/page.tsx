@@ -17,7 +17,7 @@ export default async function AssistantPage({ searchParams }: Props) {
   const initialQuestion = typeof q === 'string' ? q : undefined;
 
   return (
-    <div className="fixed inset-0 flex flex-col overflow-hidden selection:bg-[var(--color-brand-saffron)] selection:text-[var(--color-brand-navy)] bg-[var(--color-brand-navy)]">
+    <div className="flex flex-col h-screen md:fixed md:inset-0 overflow-hidden selection:bg-[var(--color-brand-saffron)] selection:text-[var(--color-brand-navy)] bg-[var(--color-brand-navy)]">
       {/* Background Ambience */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-[var(--color-brand-blue)] opacity-[0.03] blur-[120px] pointer-events-none" />
       
@@ -27,7 +27,7 @@ export default async function AssistantPage({ searchParams }: Props) {
       </div>
       
       {/* Main Chat Area */}
-      <main className="flex-1 flex flex-col items-center justify-center w-full px-4 sm:px-6 pt-[120px] pb-6 md:pt-[130px] md:pb-8 z-10 overflow-hidden min-h-0 animate-fade-in-up">
+      <main className="flex-1 flex flex-col items-center justify-center w-full px-4 sm:px-6 pt-24 md:pt-[130px] pb-4 md:pb-8 z-10 overflow-hidden min-h-0 animate-fade-in-up">
         <div className="w-full h-full max-w-5xl mx-auto flex flex-col min-h-0 overflow-hidden">
           <ChatWindow initialQuestion={initialQuestion} />
         </div>

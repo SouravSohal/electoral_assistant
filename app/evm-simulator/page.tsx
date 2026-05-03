@@ -13,20 +13,20 @@ export default function EVMSimulatorPage() {
     <main className="min-h-screen bg-civic-navy text-civic-white">
       <Navbar />
       
-      <div className="pt-32 pb-20 px-6">
+      <div className="pt-24 md:pt-32 pb-20 px-4 md:px-6">
         <div className="container-max">
-          <div className="max-w-3xl mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-civic-blue/10 border border-civic-blue/20 mb-4">
+          <div className="max-w-3xl mb-12 animate-[fade-in-up_0.6s_ease-out]">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-civic-blue/10 border border-civic-blue/20 mb-6">
               <DynamicIcon name="Tablet" className="w-4 h-4 text-civic-blue-light" />
-              <span className="text-xs font-bold text-civic-blue-light uppercase tracking-widest">Educational Tool</span>
+              <span className="text-[10px] md:text-xs font-bold text-civic-blue-light uppercase tracking-widest">Educational Tool</span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">
+            <h1 className="text-3xl md:text-5xl lg:text-display font-display font-black mb-6 tracking-tight leading-tight">
               Interactive <span className="gradient-text">EVM & VVPAT</span> Simulator
             </h1>
             
-            <p className="text-lg text-civic-gray-300 leading-relaxed">
-              Don't let election day be your first time. Practice casting your vote in our safe, educational simulator. 
+            <p className="text-base md:text-xl text-civic-gray-300 leading-relaxed max-w-2xl">
+              Don&apos;t let election day be your first time. Practice casting your vote in our safe, educational simulator. 
               Understand how the machine works, verify the VVPAT slip, and listen for the confirmation beep.
             </p>
           </div>

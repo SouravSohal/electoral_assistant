@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { MOCK_CANDIDATES, NOTA_CANDIDATE, Candidate } from "@/lib/mock-candidates";
 import { DynamicIcon } from "@/components/ui/DynamicIcon";
 import { cn } from "@/lib/utils";
@@ -110,7 +110,7 @@ export function BallotPreview() {
               <ul className="space-y-2 text-xs text-[var(--color-brand-gray-400)]">
                 <li className="flex gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-brand-blue)] mt-1 shrink-0" aria-hidden="true" />
-                  Look for your candidate's name and symbol.
+                  Look for your candidate&apos;s name and symbol.
                 </li>
                 <li className="flex gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-brand-blue)] mt-1 shrink-0" aria-hidden="true" />
@@ -177,38 +177,39 @@ function BallotRow({ candidate, onVote, isSelected, disabled }: BallotRowProps) 
   return (
     <div 
       className={cn(
-        "flex items-stretch h-16 bg-white border border-[#94a3b8] rounded transition-all group",
+        "flex items-stretch h-14 md:h-16 bg-white border border-[#94a3b8] rounded transition-all group",
         isSelected && "ring-2 ring-blue-600 ring-inset"
       )}
       role="listitem"
     >
       {/* Number */}
-      <div className="w-12 border-r border-[#cbd5e1] flex items-center justify-center font-mono font-bold text-[#475569] bg-[#f8fafc]" aria-hidden="true">
+      <div className="w-10 md:w-12 border-r border-[#cbd5e1] flex items-center justify-center font-mono font-bold text-[10px] md:text-sm text-[#475569] bg-[#f8fafc]" aria-hidden="true">
         {candidate.id}
       </div>
 
       {/* Name and Hindi Name */}
-      <div className="flex-1 px-4 flex flex-col justify-center min-w-0">
-        <p className="text-sm font-bold text-gray-900 truncate leading-tight">
+      <div className="flex-1 px-2 md:px-4 flex flex-col justify-center min-w-0">
+        <p className="text-[11px] md:text-sm font-bold text-gray-900 truncate leading-tight">
           {candidate.name}
         </p>
-        <p className="text-xs text-gray-500 truncate" lang="hi">
+        <p className="text-[10px] md:text-xs text-gray-500 truncate" lang="hi">
           {candidate.nameHi}
         </p>
       </div>
 
       {/* Symbol */}
-      <div className="w-16 border-l border-[#cbd5e1] flex items-center justify-center bg-[#f8fafc]" aria-label={`Party Symbol: ${candidate.symbol}`}>
-        <DynamicIcon name={candidate.symbol} size={28} className="text-gray-700" aria-hidden="true" />
+      <div className="w-12 md:w-16 border-l border-[#cbd5e1] flex items-center justify-center bg-[#f8fafc]" aria-label={`Party Symbol: ${candidate.symbol}`}>
+        <DynamicIcon name={candidate.symbol} size={22} className="text-gray-700 md:hidden" aria-hidden="true" />
+        <DynamicIcon name={candidate.symbol} size={28} className="text-gray-700 hidden md:block" aria-hidden="true" />
       </div>
 
       {/* Blue Button */}
-      <div className="w-20 border-l border-[#cbd5e1] flex items-center justify-center bg-[#f1f5f9]">
+      <div className="w-16 md:w-20 border-l border-[#cbd5e1] flex items-center justify-center bg-[#f1f5f9]">
         <button
           onClick={onVote}
           disabled={disabled}
           className={cn(
-            "w-12 h-8 rounded bg-blue-700 shadow-md transition-all active:scale-90 active:bg-blue-900 active:shadow-inner focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 outline-none",
+            "w-10 h-7 md:w-12 md:h-8 rounded bg-blue-700 shadow-md transition-all active:scale-90 active:bg-blue-900 active:shadow-inner focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 outline-none",
             "disabled:opacity-50 disabled:cursor-not-allowed",
             isSelected ? "bg-blue-900 shadow-inner scale-95" : "hover:bg-blue-800"
           )}

@@ -21,27 +21,6 @@ export function AccessibilityToolbar() {
   const [dyslexicFont, setDyslexicFont] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Load preferences
-  useEffect(() => {
-    console.log("AccessibilityToolbar mounted");
-    const savedSize = localStorage.getItem("a11y-font-size") as FontSize;
-    const savedContrast = localStorage.getItem("a11y-high-contrast") === "true";
-    const savedDyslexic = localStorage.getItem("a11y-dyslexic") === "true";
-
-    if (savedSize) handleFontSize(savedSize);
-    if (savedContrast) handleContrast(true);
-    if (savedDyslexic) handleDyslexic(true);
-  }, []);
-
-  // Close on escape
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpen(false);
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, []);
-
   const handleFontSize = (size: FontSize) => {
     const html = document.documentElement;
     html.classList.remove("a11y-font-lg", "a11y-font-xl");
@@ -70,6 +49,31 @@ export function AccessibilityToolbar() {
     localStorage.setItem("a11y-dyslexic", String(enable));
   };
 
+  // Load preferences
+  useEffect(() => {
+    console.log("AccessibilityToolbar mounted");
+    const savedSize = localStorage.getItem("a11y-font-size") as FontSize;
+    const savedContrast = localStorage.getItem("a11y-high-contrast") === "true";
+    const savedDyslexic = localStorage.getItem("a11y-dyslexic") === "true";
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (savedSize) handleFontSize(savedSize);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (savedContrast) handleContrast(true);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (savedDyslexic) handleDyslexic(true);
+  }, []);
+
+  // Close on escape
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
+
+
   const resetAll = () => {
     handleFontSize("standard");
     handleContrast(false);
@@ -77,7 +81,7 @@ export function AccessibilityToolbar() {
   };
 
   return (
-    <aside className="fixed bottom-6 left-6 z-[60]" ref={menuRef} aria-label="Accessibility Settings Panel">
+    <aside className="fixed bottom-4 left-4 md:bottom-6 md:left-6 z-[60]" ref={menuRef} aria-label="Accessibility Settings Panel">
       {/* Floating Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -85,20 +89,20 @@ export function AccessibilityToolbar() {
         aria-controls="a11y-panel"
         aria-label="Accessibility Settings"
         className={cn(
-          "w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-xl border-2 z-[70]",
+          "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-xl border-2 z-[70]",
           isOpen 
             ? "bg-[var(--color-brand-saffron)] text-[var(--color-brand-navy)] border-[var(--color-brand-saffron)] scale-110" 
             : "bg-[var(--color-brand-blue)] text-white border-white/20 hover:scale-105 active:scale-95 shadow-blue-500/20"
         )}
       >
-        {isOpen ? <X size={24} /> : <Accessibility size={24} />}
+        {isOpen ? <X size={22} className="md:size-24" /> : <Accessibility size={22} className="md:size-24" />}
       </button>
 
       {/* Settings Panel */}
       <div
         id="a11y-panel"
         className={cn(
-          "absolute bottom-16 left-0 w-72 glass-panel p-6 rounded-3xl transition-all duration-500 origin-bottom-left shadow-2xl",
+          "absolute bottom-14 md:bottom-16 left-0 w-[calc(100vw-2rem)] sm:w-72 glass-panel p-6 rounded-3xl transition-all duration-500 origin-bottom-left shadow-2xl backdrop-blur-xl",
           isOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-90 translate-y-4 pointer-events-none"
         )}
       >

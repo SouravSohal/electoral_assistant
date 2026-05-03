@@ -31,6 +31,7 @@ export default function LoginPage() {
       return () => unsubscribe();
     } catch (e) {
       console.warn("Firebase Auth is not configured.");
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCheckingAuth(false);
     }
   }, [router]);
@@ -42,13 +43,14 @@ export default function LoginPage() {
       const auth = getFirebaseAuth();
       await signInWithPopup(auth, provider);
       // router.push("/") is handled by onAuthStateChanged
-    } catch (error: any) {
-      console.error("Login Error:", error);
+    } catch (error) {
+      const err = error as { code?: string; message?: string };
+      console.error("Login Error:", err);
       
-      if (error.code === "auth/user-cancelled") {
+      if (err.code === "auth/user-cancelled") {
         // Silent or subtle notification - user closed the popup
         console.log("User cancelled the login flow.");
-      } else if (error.message?.includes("IdP denied access")) {
+      } else if (err.message?.includes("IdP denied access")) {
         alert(
           "Access denied by Google. This often means:\n" +
           "1. Google Sign-in is not enabled in Firebase Console.\n" +
@@ -56,7 +58,7 @@ export default function LoginPage() {
           "3. The API key has restrictions."
         );
       } else {
-        alert(`Sign-in failed: ${error.message || "Unknown error"}`);
+        alert(`Sign-in failed: ${err.message || "Unknown error"}`);
       }
     } finally {
       setLoading(false);
@@ -75,19 +77,19 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col selection:bg-[var(--color-brand-saffron)] selection:text-[var(--color-brand-navy)] bg-[var(--color-brand-navy)]">
       <Navbar />
 
-      <main className="flex-1 flex items-center justify-center p-4 pt-[120px] relative overflow-hidden">
+      <main className="flex-1 flex items-center justify-center p-4 pt-24 md:pt-[120px] relative overflow-hidden">
         {/* Decorative background glows */}
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[var(--color-brand-blue)] opacity-[0.05] blur-[120px] pointer-events-none" />
         <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[var(--color-brand-saffron)] opacity-[0.03] blur-[120px] pointer-events-none" />
 
         <div className="w-full max-w-md animate-[fade-in-up_0.6s_ease-out]">
-          <div className="glass-panel p-8 md:p-12 text-center relative">
-            <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-2xl bg-[var(--color-brand-blue)] flex items-center justify-center shadow-xl shadow-blue-500/20">
-              <DynamicIcon name="ShieldCheck" className="text-white" size={24} />
+          <div className="glass-panel p-6 md:p-12 text-center relative">
+            <div className="absolute -top-5 md:-top-6 left-1/2 -translate-x-1/2 w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-[var(--color-brand-blue)] flex items-center justify-center shadow-xl shadow-blue-500/20">
+              <DynamicIcon name="ShieldCheck" className="text-white md:size-24" size={20} />
             </div>
 
-            <h1 className="text-3xl font-black mb-2 tracking-tight mt-4">Welcome Back</h1>
-            <p className="text-[var(--color-brand-gray-300)] mb-10">
+            <h1 className="text-2xl md:text-3xl font-black mb-2 tracking-tight mt-4">Welcome Back</h1>
+            <p className="text-sm md:text-base text-[var(--color-brand-gray-300)] mb-8 md:mb-10">
               Sign in to save your voting reminders and personalized election alerts.
             </p>
 

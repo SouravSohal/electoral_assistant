@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Vote, Menu, X, Sparkles, LogIn, LogOut, User as UserIcon, ChevronDown } from "lucide-react";
+import { Vote, Menu, X, Sparkles, LogIn, LogOut, ChevronDown } from "lucide-react";
 import { APP_NAME, NAV_ITEMS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
@@ -208,58 +208,118 @@ export function Navbar() {
           isMenuOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-4 pointer-events-none"
         )}
       >
-        <div className="glass-panel border-[hsla(210,20%,98%,0.1)] bg-[hsla(222,65%,8%,0.95)] p-5 shadow-2xl rounded-3xl">
-          <ul role="list" className="flex flex-col gap-1">
-            {NAV_ITEMS.map((item) => {
-              if ("children" in item) {
+        <div className="glass-panel border-[hsla(210,20%,98%,0.1)] bg-[hsla(222,65%,8%,0.98)] p-5 shadow-2xl rounded-3xl backdrop-blur-xl">
+          <div className="flex flex-col gap-6">
+            {/* Nav Links */}
+            <ul role="list" className="flex flex-col gap-1">
+              {NAV_ITEMS.map((item) => {
+                if ("children" in item) {
+                  return (
+                    <li key={item.id} className="flex flex-col">
+                      <div className="px-5 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-brand-gray-500)] mt-2">
+                        {item.label}
+                      </div>
+                      {item.children.map((child) => {
+                        const isActive = pathname === child.href;
+                        return (
+                          <Link
+                            key={child.id}
+                            href={child.href}
+                            tabIndex={isMenuOpen ? 0 : -1}
+                            className={cn(
+                              "focus-ring flex items-center px-5 py-3.5 rounded-2xl text-sm font-bold uppercase tracking-wider transition-all duration-300",
+                              isActive
+                                ? "bg-[hsla(215,85%,55%,0.15)] text-[var(--color-brand-blue)] border border-[hsla(215,85%,55%,0.2)]"
+                                : "text-[var(--color-brand-muted)] hover:text-white hover:bg-[hsla(210,20%,98%,0.05)] border border-transparent"
+                            )}
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            {child.label}
+                          </Link>
+                        );
+                      })}
+                    </li>
+                  );
+                }
+
+                const isActive = pathname === item.href;
                 return (
-                  <li key={item.id} className="flex flex-col">
-                    <div className="px-5 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-brand-gray-500)] mt-2">
+                  <li key={item.id}>
+                    <Link
+                      href={item.href}
+                      tabIndex={isMenuOpen ? 0 : -1}
+                      className={cn(
+                        "focus-ring flex items-center px-5 py-3.5 rounded-2xl text-sm font-bold uppercase tracking-wider transition-all duration-300",
+                        isActive
+                          ? "bg-[hsla(215,85%,55%,0.15)] text-[var(--color-brand-blue)] border border-[hsla(215,85%,55%,0.2)]"
+                          : "text-[var(--color-brand-muted)] hover:text-white hover:bg-[hsla(210,20%,98%,0.05)] border border-transparent"
+                      )}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
                       {item.label}
-                    </div>
-                    {item.children.map((child) => {
-                      const isActive = pathname === child.href;
-                      return (
-                        <Link
-                          key={child.id}
-                          href={child.href}
-                          tabIndex={isMenuOpen ? 0 : -1}
-                          className={cn(
-                            "focus-ring flex items-center px-5 py-3.5 rounded-2xl text-sm font-bold uppercase tracking-wider transition-all duration-300",
-                            isActive
-                              ? "bg-[hsla(215,85%,55%,0.15)] text-[var(--color-brand-blue)] border border-[hsla(215,85%,55%,0.2)]"
-                              : "text-[var(--color-brand-muted)] hover:text-white hover:bg-[hsla(210,20%,98%,0.05)] border border-transparent"
-                          )}
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          {child.label}
-                        </Link>
-                      );
-                    })}
+                    </Link>
                   </li>
                 );
-              }
+              })}
+            </ul>
 
-              const isActive = pathname === item.href;
-              return (
-                <li key={item.id}>
-                  <Link
-                    href={item.href}
-                    tabIndex={isMenuOpen ? 0 : -1}
-                    className={cn(
-                      "focus-ring flex items-center px-5 py-3.5 rounded-2xl text-sm font-bold uppercase tracking-wider transition-all duration-300",
-                      isActive
-                        ? "bg-[hsla(215,85%,55%,0.15)] text-[var(--color-brand-blue)] border border-[hsla(215,85%,55%,0.2)]"
-                        : "text-[var(--color-brand-muted)] hover:text-white hover:bg-[hsla(210,20%,98%,0.05)] border border-transparent"
+            {/* Separator */}
+            <div className="h-px bg-[hsla(210,20%,98%,0.1)] w-full" />
+
+            {/* Mobile Actions */}
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between px-2">
+                <span className="text-xs font-bold text-[var(--color-brand-gray-500)] uppercase tracking-widest">Language</span>
+                <LanguageSwitcher />
+              </div>
+
+              {user ? (
+                <div className="flex flex-col gap-3 p-4 rounded-2xl bg-[hsla(210,20%,98%,0.03)] border border-[hsla(210,20%,98%,0.05)]">
+                  <div className="flex items-center gap-3">
+                    {user.photoURL ? (
+                      <img src={user.photoURL} alt="" className="w-10 h-10 rounded-full border border-[hsla(210,20%,98%,0.1)]" />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-[var(--color-brand-blue)] flex items-center justify-center text-white font-bold">
+                        {user.displayName?.[0] || user.email?.[0] || "U"}
+                      </div>
                     )}
-                    onClick={() => setIsMenuOpen(false)}
+                    <div className="flex flex-col">
+                      <span className="text-sm font-bold text-white">{user.displayName || "Citizen"}</span>
+                      <span className="text-[11px] text-[var(--color-brand-gray-500)]">{user.email}</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-bold text-red-400 bg-red-400/5 hover:bg-red-400/10 transition-all"
                   >
-                    {item.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+                    <LogOut size={18} />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl text-sm font-bold text-white bg-[hsla(210,20%,98%,0.05)] border border-[hsla(210,20%,98%,0.1)]"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <LogIn size={18} />
+                  <span>Sign In</span>
+                </Link>
+              )}
+
+              <Link
+                href="/assistant"
+                className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl text-sm font-bold text-white bg-[var(--color-brand-blue)] shadow-lg shadow-blue-500/20"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Sparkles size={18} />
+                <span>Ask AI Assistant</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </nav>

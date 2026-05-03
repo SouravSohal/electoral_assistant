@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-16">
           
           {/* Brand & Disclaimer Column */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 flex flex-col items-center md:items-start text-center md:text-left">
             <Link href="/" className="flex items-center gap-3 mb-6 focus-ring w-fit">
               <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[var(--color-brand-blue)]">
                 <Vote size={18} className="text-white" />
@@ -30,7 +30,7 @@ export function Footer() {
           </div>
 
           {/* Quick Links Column */}
-          <div>
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h4 className="text-white font-bold tracking-wider uppercase text-xs mb-6">Platform</h4>
             <ul className="space-y-4">
               {NAV_ITEMS.map((item) => {
@@ -61,7 +61,7 @@ export function Footer() {
           </div>
 
           {/* Official Resources Column */}
-          <div>
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h4 className="text-white font-bold tracking-wider uppercase text-xs mb-6">Official Resources</h4>
             <ul className="space-y-4">
               <li>
@@ -93,11 +93,11 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-[hsla(210,20%,98%,0.05)]">
+        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-[hsla(210,20%,98%,0.05)] text-center md:text-left">
           <p className="text-xs text-[var(--color-brand-muted)] mb-4 md:mb-0">
             © {new Date().getFullYear()} {APP_NAME}. All rights reserved.
           </p>
-          <p className="flex items-center text-xs text-[var(--color-brand-muted)]">
+          <p className="flex items-center justify-center md:justify-end text-xs text-[var(--color-brand-muted)]">
             Built with <Heart size={12} className="mx-1.5 text-[var(--color-brand-saffron)]" /> for Indian Democracy
           </p>
         </div>

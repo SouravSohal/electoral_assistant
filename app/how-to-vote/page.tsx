@@ -17,23 +17,23 @@ export default function HowToVotePage() {
     <div className="min-h-screen flex flex-col selection:bg-[var(--color-brand-saffron)] selection:text-[var(--color-brand-navy)] bg-[var(--color-brand-navy)]">
       <Navbar />
 
-      <main className="flex-1 pt-[120px] pb-20">
+      <main className="flex-1 pt-24 md:pt-[120px] pb-12 md:pb-20">
         {/* Hero Section */}
-        <div className="relative overflow-hidden mb-16 py-12 md:py-20">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[400px] bg-[var(--color-brand-blue)] opacity-[0.05] blur-[120px] pointer-events-none" />
+        <div className="relative overflow-hidden mb-10 md:mb-16 py-10 md:py-20">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[300px] md:h-[400px] bg-[var(--color-brand-blue)] opacity-[0.05] blur-[120px] pointer-events-none" />
           
           <div className="container-max px-4 relative z-10 text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[hsla(28,92%,58%,0.1)] border border-[hsla(28,92%,58%,0.2)] mb-6 animate-[fade-in-up_0.5s_ease-out]">
-              <Sparkles size={14} className="text-[var(--color-brand-saffron)]" />
-              <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-brand-saffron)]">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[hsla(28,92%,58%,0.1)] border border-[hsla(28,92%,58%,0.2)] mb-5 md:mb-6 animate-[fade-in-up_0.5s_ease-out]">
+              <Sparkles size={12} className="text-[var(--color-brand-saffron)] md:size-14" />
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-[var(--color-brand-saffron)]">
                 {HOW_TO_VOTE_STEPS_METADATA.tagline}
               </span>
             </div>
             
-            <h1 className="text-display md:text-6xl font-black mb-6 tracking-tight animate-[fade-in-up_0.6s_ease-out]">
+            <h1 className="text-3xl md:text-5xl lg:text-display font-black mb-4 md:mb-6 tracking-tight animate-[fade-in-up_0.6s_ease-out] leading-tight">
               {HOW_TO_VOTE_STEPS_METADATA.title}
             </h1>
-            <p className="text-xl text-[var(--color-brand-gray-300)] max-w-2xl mx-auto leading-relaxed animate-[fade-in-up_0.7s_ease-out]">
+            <p className="text-sm md:text-xl text-[var(--color-brand-gray-300)] max-w-2xl mx-auto leading-relaxed animate-[fade-in-up_0.7s_ease-out]">
               {HOW_TO_VOTE_STEPS_METADATA.subtitle}
             </p>
           </div>
@@ -51,47 +51,47 @@ export default function HowToVotePage() {
                 <div className="glass-panel overflow-hidden border border-[hsla(210,20%,98%,0.05)] hover:border-[hsla(215,85%,55%,0.3)] transition-all duration-300">
                   <div className="flex flex-col md:flex-row">
                     {/* Step Number & Icon Column */}
-                    <div className="md:w-48 bg-[hsla(215,85%,55%,0.03)] border-b md:border-b-0 md:border-r border-[hsla(210,20%,98%,0.05)] p-8 flex flex-col items-center justify-center text-center gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-[var(--color-brand-navy)] border border-[hsla(215,85%,55%,0.2)] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        <DynamicIcon name={step.icon} className="text-[var(--color-brand-blue)]" size={24} />
+                    <div className="md:w-48 bg-[hsla(215,85%,55%,0.03)] border-b md:border-b-0 md:border-r border-[hsla(210,20%,98%,0.05)] p-6 md:p-8 flex flex-row md:flex-col items-center justify-center text-center gap-5 md:gap-4">
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-[var(--color-brand-navy)] border border-[hsla(215,85%,55%,0.2)] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 shrink-0">
+                        <DynamicIcon name={step.icon} className="text-[var(--color-brand-blue)] md:size-24" size={20} />
                       </div>
-                      <div className="space-y-1">
-                        <span className="text-xs font-bold text-[var(--color-brand-blue)] uppercase tracking-widest">Step</span>
-                        <div className="text-4xl font-black text-white leading-none">{step.step}</div>
+                      <div className="space-y-0.5 md:space-y-1 text-left md:text-center">
+                        <span className="text-[10px] md:text-xs font-bold text-[var(--color-brand-blue)] uppercase tracking-widest block">Step</span>
+                        <div className="text-3xl md:text-4xl font-black text-white leading-none">{step.step}</div>
                       </div>
                     </div>
 
                     {/* Content Column */}
-                    <div className="flex-1 p-8 md:p-10">
+                    <div className="flex-1 p-6 md:p-10">
                       <div className="mb-6">
-                        <div className="flex flex-wrap items-center gap-3 mb-2">
-                          <h2 className="text-2xl font-bold text-white tracking-tight">{step.title}</h2>
-                          <span className="text-sm font-medium text-[var(--color-brand-saffron)] opacity-80" lang="hi">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mb-2">
+                          <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight">{step.title}</h2>
+                          <span className="text-xs md:text-sm font-medium text-[var(--color-brand-saffron)] opacity-80" lang="hi">
                             {step.titleHi}
                           </span>
                         </div>
-                        <p className="text-[var(--color-brand-gray-300)] leading-relaxed">
+                        <p className="text-sm md:text-base text-[var(--color-brand-gray-300)] leading-relaxed">
                           {step.description}
                         </p>
                       </div>
 
-                      <div className="space-y-4 mb-8">
+                      <div className="space-y-3 md:space-y-4 mb-8">
                         {step.content.map((item, i) => (
-                          <div key={i} className="flex gap-4 group/item">
-                            <div className="shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--color-brand-blue)] group-hover/item:scale-150 transition-transform" />
-                            <p className="text-[15px] text-[var(--color-brand-gray-300)] leading-relaxed">
+                          <div key={i} className="flex gap-3 md:gap-4 group/item">
+                            <div className="shrink-0 mt-1.5 w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-[var(--color-brand-blue)] group-hover/item:scale-150 transition-transform" />
+                            <p className="text-[13px] md:text-[15px] text-[var(--color-brand-gray-300)] leading-relaxed">
                               {item}
                             </p>
                           </div>
                         ))}
                       </div>
 
-                      <div className="flex flex-wrap gap-4 pt-6 border-t border-[hsla(210,20%,98%,0.05)]">
+                      <div className="flex flex-col sm:flex-row gap-3 md:gap-4 pt-6 border-t border-[hsla(210,20%,98%,0.05)]">
                         <Link 
                           href={step.officialLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="btn-primary py-2.5 px-5 flex items-center gap-2 text-sm shadow-lg shadow-blue-500/10"
+                          className="btn-primary py-3 px-6 flex items-center justify-center gap-2 text-sm font-bold shadow-lg shadow-blue-500/10"
                         >
                           Official Portal
                           <ExternalLink size={14} />
@@ -99,9 +99,9 @@ export default function HowToVotePage() {
                         
                         <Link 
                           href={`/assistant?q=${encodeURIComponent(step.aiPrompt)}`}
-                          className="btn-ghost py-2.5 px-5 flex items-center gap-2 text-sm hover:bg-[hsla(215,85%,55%,0.05)]"
+                          className="btn-ghost py-3 px-6 flex items-center justify-center gap-2 text-sm font-bold hover:bg-[hsla(215,85%,55%,0.05)]"
                         >
-                          Ask AI about this
+                          Ask AI Assistant
                           <ArrowRight size={14} />
                         </Link>
                       </div>

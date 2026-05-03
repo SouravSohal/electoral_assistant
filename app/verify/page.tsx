@@ -12,19 +12,15 @@ export default function VerifyPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const isButtonDisabled = isLoading || inputText.length < 10 || !mounted;
   const resultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
-  // Sync disabled state after mount to avoid hydration mismatch
-  useEffect(() => {
-    if (mounted) {
-      setButtonDisabled(isLoading || inputText.length < 10);
-    }
-  }, [mounted, isLoading, inputText]);
+  // Auto-scroll to bottom as result streams in
 
   // Auto-scroll to bottom as result streams in
   useEffect(() => {
@@ -67,8 +63,9 @@ export default function VerifyPage() {
         const chunk = decoder.decode(value, { stream: true });
         setResult((prev) => prev + chunk);
       }
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.");
+    } catch (err) {
+      const e = err as Error;
+      setError(e.message || "An unexpected error occurred.");
     } finally {
       setIsLoading(false);
     }
@@ -84,55 +81,55 @@ export default function VerifyPage() {
   const verdict = getVerdict();
 
   return (
-    <div className="flex flex-col h-screen bg-civic-navy text-civic-white overflow-hidden">
+    <div className="flex flex-col min-h-screen bg-civic-navy text-civic-white md:h-screen md:overflow-hidden">
       <Navbar />
 
-      <main className="flex-grow pt-24 pb-6 px-4 md:px-8 overflow-hidden">
+      <main className="flex-grow pt-24 md:pt-28 pb-6 px-4 md:px-8 overflow-y-auto md:overflow-hidden">
         <div className="container-max h-full flex flex-col">
           {/* Header - Compact */}
-          <div className="mb-8 relative flex items-center justify-between">
+          <div className="mb-8 relative flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 className="text-4xl font-display font-black tracking-tighter flex items-center gap-3">
+              <h1 className="text-3xl md:text-4xl font-display font-black tracking-tighter flex items-center gap-3">
                 <span className="p-2 rounded-xl bg-civic-blue/20 border border-civic-blue/30">
-                  <DynamicIcon name="ShieldCheck" className="w-8 h-8 text-civic-blue" />
+                  <DynamicIcon name="ShieldCheck" className="w-6 h-6 md:w-8 md:h-8 text-civic-blue" />
                 </span>
                 AI <span className="gradient-text">Fact-Checker</span>
               </h1>
-              <p className="text-sm text-civic-gray-300 mt-1 max-w-xl">
-                Verifying electoral claims against ECI guidelines and the Representation of the People Act.
+              <p className="text-xs md:text-sm text-civic-gray-300 mt-1 max-w-xl">
+                Verifying electoral claims against ECI guidelines and legal frameworks.
               </p>
             </div>
 
-            <div className="hidden md:flex items-center gap-4">
-              <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] uppercase tracking-widest font-bold text-civic-gray-500">
+            <div className="flex md:flex items-center gap-4">
+              <div className="px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-white/5 border border-white/10 text-[9px] md:text-[10px] uppercase tracking-widest font-bold text-civic-gray-500">
                 Agentic Status: <span className="text-emerald-400">Online</span>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow overflow-hidden min-h-0">
-            {/* Input Form Area - Scrollable if content too long */}
-            <div className="lg:col-span-5 flex flex-col h-full overflow-hidden">
-              <div className="glass-card p-6 md:p-8 border-white/5 overflow-y-auto custom-scrollbar">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:flex-grow md:overflow-hidden min-h-0">
+            {/* Input Form Area */}
+            <div className="lg:col-span-5 flex flex-col h-full">
+              <div className="glass-card p-5 md:p-8 border-white/5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-civic-blue/5 to-transparent -z-10" />
 
-                <form onSubmit={handleVerify} className="space-y-10 h-full flex flex-col">
-                  <div className="flex-grow">
+                <form onSubmit={handleVerify} className="space-y-6 md:space-y-10 flex flex-col">
+                  <div>
                     <div className="flex items-center justify-between mb-3">
                       <label
                         htmlFor="misinfo-input"
-                        className="text-xs font-bold uppercase tracking-widest text-civic-gray-500"
+                        className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-civic-gray-500"
                       >
                         Suspected Claim
                       </label>
-                      <span className="text-[10px] px-2 py-1 rounded bg-white/5 text-white/40 uppercase tracking-tighter">
+                      <span className="text-[9px] md:text-[10px] px-2 py-1 rounded bg-white/5 text-white/40 uppercase tracking-tighter">
                         Min 10 chars
                       </span>
                     </div>
                     <textarea
                       id="misinfo-input"
-                      className="input-base min-h-[270px] lg:min-h-[370px] h-full resize-none text-lg leading-relaxed placeholder:text-white/20 focus:border-civic-blue/50"
-                      placeholder="Paste the message here... e.g. 'ECI has changed the voting age to 21 for 2026'"
+                      className="input-base min-h-[180px] md:min-h-[300px] lg:min-h-[370px] resize-none text-base md:text-lg leading-relaxed placeholder:text-white/20 focus:border-civic-blue/50"
+                      placeholder="Paste the message here... e.g. 'ECI has changed the voting age to 21'"
                       value={inputText}
                       onChange={(e) => setInputText(e.target.value)}
                       disabled={isLoading}
@@ -148,7 +145,7 @@ export default function VerifyPage() {
 
                   <button
                     type="submit"
-                    disabled={buttonDisabled}
+                    disabled={isButtonDisabled}
                     suppressHydrationWarning
                     className="btn-gold w-full flex items-center justify-center gap-3 py-5 text-lg shadow-[0_8px_30px_hsla(43,92%,58%,0.15)] hover:shadow-[0_12px_40px_hsla(43,92%,58%,0.25)] transition-all active:scale-[0.98] shrink-0"
                   >

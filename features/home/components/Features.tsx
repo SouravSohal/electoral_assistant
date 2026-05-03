@@ -1,4 +1,4 @@
-import { BotMessageSquare, CalendarRange, MapPin, Languages, ShieldCheck, Accessibility, Tablet } from "lucide-react";
+import { BotMessageSquare, CalendarRange, MapPin, Languages, Accessibility, Tablet } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -47,14 +47,14 @@ const FEATURES = [
 
 export function Features() {
   return (
-    <section className="py-24 bg-[var(--color-brand-surface)] border-y border-[hsla(210,20%,98%,0.05)] relative z-10">
-      <div className="container-max">
+    <section className="py-16 md:py-24 bg-[var(--color-brand-surface)] border-y border-[hsla(210,20%,98%,0.05)] relative z-10">
+      <div className="container-max px-4">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
-          <h2 className="text-headline mb-4 text-white">
+        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-20">
+          <h2 className="text-3xl md:text-4xl lg:text-headline mb-4 text-white leading-tight">
             Everything you need to be an <span className="text-[var(--color-brand-saffron)]">informed voter.</span>
           </h2>
-          <p className="text-subheadline text-[var(--color-brand-muted)]">
+          <p className="text-sm md:text-lg lg:text-subheadline text-[var(--color-brand-muted)] leading-relaxed">
             A complete suite of tools designed specifically to simplify the Indian electoral process for first-time and veteran voters alike.
           </p>
         </div>

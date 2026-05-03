@@ -37,24 +37,41 @@ export default function PollingFinderClient({ mapsApiKey }: PollingFinderClientP
   const locations = data?.pollingLocations || (hasSearched ? [] : featuredLocations);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+      {/* Map Side - Appears first on mobile for immediate context */}
+      <div className="lg:col-span-7 order-1 lg:order-2">
+        <div className="md:sticky md:top-24">
+          <div className="glass-panel p-1.5 md:p-2 animate-[fade-in-up_0.8s_ease-out] overflow-hidden h-[300px] md:h-auto">
+            <PollingMap locations={locations} apiKey={mapsApiKey} />
+          </div>
+          
+          <div className="mt-4 p-4 rounded-xl bg-[hsla(215,85%,55%,0.05)] border border-[hsla(215,85%,55%,0.1)] flex items-start gap-3">
+            <Info size={16} className="text-[var(--color-brand-blue)] mt-0.5 shrink-0" />
+            <p className="text-[11px] md:text-xs text-[var(--color-brand-gray-300)] leading-relaxed">
+              <strong>Pro Tip:</strong> Carrying your Voter Information Slip (VIS) is recommended, 
+              but any of the 12 ECI photo IDs are valid.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Search and List Side */}
-      <div className="lg:col-span-5 space-y-8 order-2 lg:order-1">
-        <section className="glass-panel p-6 animate-[fade-in-up_0.6s_ease-out]">
-          <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-            <SearchIcon size={20} className="text-[var(--color-brand-blue)]" />
+      <div className="lg:col-span-5 space-y-6 md:space-y-8 order-2 lg:order-1">
+        <section className="glass-panel p-5 md:p-6 animate-[fade-in-up_0.6s_ease-out]">
+          <h2 className="text-lg md:text-xl font-bold mb-5 md:mb-6 flex items-center gap-2">
+            <SearchIcon size={18} className="text-[var(--color-brand-blue)]" />
             Search Address
           </h2>
           <AddressSearch onSearch={handleSearch} isLoading={loading} />
         </section>
 
         {!loading && (
-          <section className="space-y-6 animate-[fade-in-up_0.3s_ease-out]">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                {!hasSearched && <Star size={18} className="text-[var(--color-brand-saffron)] fill-[var(--color-brand-saffron)]" />}
+          <section className="space-y-5 md:space-y-6 animate-[fade-in-up_0.3s_ease-out]">
+            <div className="flex items-center justify-between px-1">
+              <h2 className="text-base md:text-lg font-bold text-white flex items-center gap-2">
+                {!hasSearched && <Star size={16} className="text-[var(--color-brand-saffron)] fill-[var(--color-brand-saffron)]" />}
                 {locations.length > 0 
-                  ? (hasSearched ? `Results (${locations.length})` : "Featured Election Hubs") 
+                  ? (hasSearched ? `Results (${locations.length})` : "Election Hubs") 
                   : "No Results Found"}
               </h2>
             </div>
@@ -140,22 +157,6 @@ export default function PollingFinderClient({ mapsApiKey }: PollingFinderClientP
         {/* Placeholder removed in favor of Featured Hubs */}
       </div>
 
-      {/* Map Side */}
-      <div className="lg:col-span-7 order-1 lg:order-2">
-        <div className="sticky top-24">
-          <div className="glass-panel p-2 animate-[fade-in-up_0.8s_ease-out] overflow-hidden">
-            <PollingMap locations={locations} apiKey={mapsApiKey} />
-          </div>
-          
-          <div className="mt-4 p-4 rounded-xl bg-[hsla(215,85%,55%,0.05)] border border-[hsla(215,85%,55%,0.1)] flex items-start gap-3">
-            <Info size={18} className="text-[var(--color-brand-blue)] mt-0.5" />
-            <p className="text-xs text-[var(--color-brand-gray-300)] leading-relaxed">
-              <strong>Pro Tip:</strong> Carrying your Voter Information Slip (VIS) to the booth is recommended, 
-              but any of the 12 ECI-approved photo IDs are also valid for voting.
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
