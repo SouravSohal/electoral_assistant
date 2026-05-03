@@ -79,3 +79,15 @@ The application was specifically adapted for the Indian electoral context, suppo
 -   **Languages**: English, Hindi, Tamil, Telugu, Bengali, Marathi.
 -   **Entities**: ECI, NVSP, Lok Sabha, Rajya Sabha, Vidhan Sabha.
 -   **Systems**: EVM, VVPAT, NOTA, Model Code of Conduct (MCC).
+
+## 🚀 Roadmap & Future Implementations
+
+### 📄 Advanced Affidavit Intelligence (Phase 6)
+The "proper setup" for candidate verification will evolve from search-based analysis to a high-fidelity audit system:
+-   **Multimodal PDF Extraction**: Direct analysis of Form 26 PDFs (Criminal, Financial, Educational) using Gemini's vision capabilities for OCR and table parsing.
+-   **ECI Deep Linking**: Automated extraction of ECI serial numbers to provide direct links to the official [affidavit.eci.gov.in](https://affidavit.eci.gov.in) portal.
+-   **Constituency Mapping**: Integrating candidate lists directly into the Polling Booth Finder based on the user's geographic location.
+
+### 🗺️ Real-time Booth Analytics
+-   Crowdsourced "Wait-time" reporting for polling booths.
+-   Accessibility-first pathfinding for PwD voters within booth premises.
