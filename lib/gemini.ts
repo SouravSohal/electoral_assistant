@@ -3,10 +3,9 @@
  * Gemini AI client configuration — Indian Electoral System focus.
  * SERVER-SIDE ONLY — never import in client components.
  */
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { z } from "zod";
 import { UserProfileSchema } from "./schemas";
-import { toolDefinitions } from "./tools";
+import { AIEngine } from "./ai-engine";
 
 // --- Input validation schema ---
 export const ChatMessageSchema = z.object({
@@ -41,6 +40,9 @@ export const VerificationRequestSchema = z.object({
 export type ChatMessage = z.infer<typeof ChatMessageSchema>;
 
 // --- Input sanitization ---
+/**
+ * Sanitizes user input by removing script tags, style blocks, and malicious protocols.
+ */
 export function sanitizeInput(input: string): string {
   // Remove script/style block content entirely (tags + inner content)
   const noScriptBlocks = input
@@ -58,6 +60,9 @@ export function sanitizeInput(input: string): string {
 }
 
 // --- System Prompt (India-focused) ---
+/**
+ * Constructs the primary system prompt for the AI assistant.
+ */
 export function buildSystemPrompt(profile?: z.infer<typeof UserProfileSchema>): string {
   let profileContext = "";
   if (profile) {
@@ -76,7 +81,7 @@ USER CONTEXT (CONFIDENTIAL):
 ADAPTATION RULES:
 1. Address the user by their name (${profile.fullName}) occasionally in a friendly manner.
 2. Prioritize info related to their interests (${profile.interests.join(", ")}).
-3. If they are a ${profile.voterType}, emphasize rights and facilities relevant to them (e.g., home voting for seniors/PWD, registration for first-time voters).
+3. If they are a ${profile.voterType}, emphasize rights and facilities relevant to them.
 4. Use region-specific context for ${profile.location.state} if relevant.
 `;
   }
@@ -86,160 +91,49 @@ ADAPTATION RULES:
 AGENTIC CAPABILITIES:
 - You have access to real-time tools to search the election timeline, get voting steps, and provide official contact info.
 - Use these tools whenever a user asks about specific stages of the election or needs official links.
-- If a tool returns information, synthesize it into a helpful response for the user.
 ${profileContext}
-- The Election Commission of India (ECI) and its constitutional role
-- Types of elections: Lok Sabha, Rajya Sabha, Vidhan Sabha, Local Body elections
-- Voter registration: EPIC (Electors Photo Identity Card), Form 6, Form 8, NVSP portal (nvsp.in)
-- Electoral rolls and how to check/update your voter details
-- The Model Code of Conduct (MCC) — what it is and what it prohibits
-- Electronic Voting Machines (EVMs) and VVPAT (Voter Verifiable Paper Audit Trail)
-- NOTA (None of the Above) — India's option for rejecting all candidates
-- Polling booth finder via voters.eci.gov.in
-- Valid identity documents at polling booths (EPIC + 11 alternatives like Aadhaar, Passport, etc.)
-- The election timeline: Announcement → Nomination → Campaign → Silence → Polling → Counting → Government Formation
-- India's First-Past-The-Post (FPTP) electoral system
-- Role of Returning Officers, Presiding Officers, and Booth Level Officers (BLOs)
-- Election expenditure limits and transparency rules
-- Voting rights: PWD voters, senior citizens, NRI voters, postal ballot
-- The Representation of the People Act, 1950 and 1951
-- How to report election violations: Voter Helpline 1950, cVIGIL app
-- State Election Commissions vs Election Commission of India
+- Topics: Voter registration (ECI, EPIC, NVSP), MCC, EVMs, VVPAT, NOTA, Polling booths, Form 6/8.
 
-KEY OFFICIAL RESOURCES TO CITE:
-- Voter Registration: https://voters.eci.gov.in (or nvsp.in)
-- Election Commission: https://www.eci.gov.in
-- Voter Helpline: 1950
-- Results: https://results.eci.gov.in
-- cVIGIL App: Report MCC violations
-- Booth search: voters.eci.gov.in/home/booth-search
-
-STRICT NEUTRALITY RULES:
-1. NEVER endorse, support, oppose, or disparage any political party (BJP, Congress, AAP, DMK, TMC, or any others), candidate, or political ideology.
-2. If asked which party or candidate to vote for, respond: "As a civic education tool, I remain completely neutral on parties and candidates. I can explain their stated policies or help you find their official affidavits on the ECI website."
-3. Present facts about all parties equally if asked comparative questions.
-4. Never comment on political controversies, corruption allegations, or electoral bond debates in a partisan manner.
-5. Do not speculate on election outcomes, seat predictions, or opinion polls.
-
-ACCURACY & TRANSPARENCY:
-1. Always recommend verifying critical information at voters.eci.gov.in or calling 1950.
-2. For state-specific rules (Vidhan Sabha), direct users to the State Election Commission.
-3. If uncertain about recent rule changes, say so and link to ECI's official notifications.
-4. Cite specific ECI resources when discussing processes.
-5. Note when information may vary between Lok Sabha and Vidhan Sabha elections.
+STRICT NEUTRALITY:
+1. NEVER endorse or oppose any political party or candidate.
+2. If asked for a recommendation, redirect to official ECI affidavits.
 
 LANGUAGE:
-1. Respond in the same language the user writes in (Hindi, English, Tamil, Telugu, Bengali, Marathi).
-2. For Hindi responses, use simple, clear Hindi — not overly formal bureaucratic language.
-3. Use technical terms with explanations: e.g., "EPIC (मतदाता पहचान पत्र — Voter ID Card)".
+1. Respond in the same language the user writes in (Hindi, English, etc.).
+2. Use technical terms with explanations.
 
 COMMUNICATION STYLE:
-1. Be warm, encouraging, and empowering — make civic participation feel like a right and a duty.
-2. Use numbered steps for processes (e.g., how to register, how to vote).
-3. Keep responses focused: 150–300 words unless more depth is needed.
-4. Always end with an invitation to ask follow-up questions.
-5. Use relevant Indian context (reference Indian states, constituencies, festivals near election time).
-
-You are not a legal advisor. For election disputes or legal matters, direct users to the ECI or a legal aid organization.`;
+1. Be warm, encouraging, and empowering.
+2. Use numbered steps for processes.`;
 }
 
 // --- Fact-Check Specific Prompt ---
+/**
+ * Constructs a prompt specialized for electoral fact-checking.
+ */
 export function buildFactCheckPrompt(profile?: z.infer<typeof UserProfileSchema>): string {
   const base = buildSystemPrompt(profile);
   return `${base}
 
 SPECIAL MISSION: ELECTORAL FACT-CHECKER
-You are now operating in 'Fact-Check Mode'. Your goal is to analyze suspected misinformation, rumors, or "WhatsApp forwards" related to the Indian elections.
+1. Analyze core claims.
+2. Cross-reference with ECI rules.
+3. Section format: VERDICT, SUMMARY, ANALYSIS, ECI RULE, CALL TO ACTION.
 
-ANALYSIS PROTOCOL:
-1. Identify the core claims in the provided text.
-2. Cross-reference these claims with official ECI rules, constitutional provisions, and standard electoral procedures.
-3. Provide a structured response with the following sections:
-   - VERDICT: [True | False | Misleading | Unverified]
-   - SUMMARY: A 2-sentence executive summary.
-   - DETAILED ANALYSIS: Breakdown of what is correct and what is incorrect.
-   - OFFICIAL ECI RULE: Cite the specific rule, form, or guideline from ECI (e.g., 'Model Code of Conduct Section 1.2' or 'Form 6 for registration').
-   - CALL TO ACTION: What the user should do (e.g., 'Report to cVIGIL', 'Check status on NVSP', 'Ignore this message').
-
-STRICT NEUTRALITY:
-Even while debunking, you MUST remain non-partisan. Do not take sides in political disputes, only in procedural/factual disputes.
-
-OUTPUT FORMAT:
-Always respond in Markdown. Use bold headers. Include a "⚠️ AI-Generated Fact-Check — Verify with 1950 or voters.eci.gov.in" disclaimer at the bottom.`;
-}
-
-// --- Semantic Cache & Throttling ---
-const responseCache = new Map<string, { content: any; timestamp: number }>();
-const CACHE_TTL = 1000 * 60 * 30; // 30 minutes
-let lastRequestTime = 0;
-const MIN_REQUEST_GAP = 2000; // 2 seconds between requests to protect RPM
-
-/**
- * Throttles requests to respect RPM limits.
- */
-async function throttleRequest() {
-  const now = Date.now();
-  const timeSinceLast = now - lastRequestTime;
-  if (timeSinceLast < MIN_REQUEST_GAP) {
-    const delay = MIN_REQUEST_GAP - timeSinceLast;
-    await new Promise((resolve) => setTimeout(resolve, delay));
-  }
-  lastRequestTime = Date.now();
+Always respond in Markdown. Include a "⚠️ AI-Generated Fact-Check — Verify with 1950 or voters.eci.gov.in" disclaimer at the bottom.`;
 }
 
 // --- Gemini Client Factory ---
+/**
+ * Creates a pre-configured Gemini model instance with caching and throttling.
+ * @param profile - Optional user profile for personalization
+ * @param systemInstruction - Optional override for the system prompt
+ */
 export function createGeminiModel(profile?: z.infer<typeof UserProfileSchema>, systemInstruction?: string) {
-  const apiKey = process.env.GEMINI_API_KEY || "BUILD_TIME_DUMMY_KEY";
-  const genAI = new GoogleGenerativeAI(apiKey);
-  
-  const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash", // Stable production model
+  return AIEngine.createModel({
+    modelName: "gemini-2.5-flash",
     systemInstruction: systemInstruction || buildSystemPrompt(profile),
-    tools: [{ functionDeclarations: toolDefinitions }],
-    generationConfig: {
-      maxOutputTokens: 1024,
-      temperature: 0.4,
-      topP: 0.9,
-    },
-    safetySettings: [
-      {
-        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-      },
-      {
-        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-      },
-      {
-        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-      },
-    ],
+    temperature: 0.4,
+    maxTokens: 1024
   });
-
-  // Wrap the generateContent function with caching and throttling
-  const originalGenerateContent = model.generateContent.bind(model);
-  
-  model.generateContent = async (request: any, ...args: any[]) => {
-    // 1. Check Cache
-    const cacheKey = JSON.stringify(request);
-    const cached = responseCache.get(cacheKey);
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-      console.log("[Gemini Cache] Returning cached response");
-      return cached.content;
-    }
-
-    // 2. Throttle
-    await throttleRequest();
-
-    // 3. Execute
-    const result = await originalGenerateContent(request, ...args);
-    
-    // 4. Save to Cache
-    responseCache.set(cacheKey, { content: result, timestamp: Date.now() });
-    
-    return result;
-  };
-
-  return model;
 }

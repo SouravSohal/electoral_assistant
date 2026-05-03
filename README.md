@@ -1,133 +1,78 @@
-# CivicGuide India 🇮🇳 — AI Electoral Assistant
+# 🇮🇳 CivicGuide India — Prompt Wars 2026
 
-**CivicGuide India** is a state-of-the-art, agentic AI platform designed to empower the 97 crore voters of India. It provides verified, personalized, and highly accessible guidance on the Indian electoral process using a sophisticated multi-agent orchestration layer.
-
----
-
-## 🎯 1. Chosen Vertical: Civic & Voter Education
-
-### The Problem
-During Indian elections, citizens face three critical challenges:
-1.  **Information Fragmentation**: Data about booths, registration, and candidates is spread across multiple portals.
-2.  **Misinformation**: Viral "WhatsApp rumors" often mislead voters about their rights or polling dates.
-3.  **Accessibility**: Technical and legal jargon makes the electoral process feel intimidating to many.
-
-### Our Solution
-A **"Cockpit for Citizens"** that acts as a personalized, agentic guide. Our persona is a **Verified Electoral Assistant** that is neutral, legally grounded, and context-aware.
+**The Challenge**: Election Process Education  
+**The Solution**: An AI-powered, agentic platform designed to empower 1.4 billion Indian citizens through transparent, neutral, and accessible electoral education.
 
 ---
 
-## 🧠 2. Approach & Logic
-
-Our core innovation is the **Multi-Agent Reasoning Graph**. Unlike basic chatbots that use single-shot prompts, CivicGuide uses **LangGraph** to coordinate a team of specialized AI agents for high-fidelity response generation.
-
-### The Agentic Decision Loop
-1.  **Intent Routing**: The system identifies if the user needs general info, a polling location, or a fact-check.
-2.  **Personalization Node**: The system fetches the user's **Firebase Profile** (State, Constituency, Language) to tailor the response contextually.
-3.  **Collaborative Analysis**: For complex queries, agents collaborate in a structured DAG:
-    -   **Researcher**: Performs real-time investigation via **Tavily Search**.
-    -   **Analyst**: Cross-references findings with the **RPA 1951** via **Legal RAG**.
-    -   **Synthesis**: Compiles the final report with a verified verdict.
-
-### Logic Diagram (Mermaid)
-```mermaid
-graph TD
-    User([User Input]) --> Router{Intent Router}
-    
-    Router -- General Assistant --> Personalizer[Personalizer Node]
-    Router -- Fact-Check --> Researcher[Researcher Node]
-    
-    Personalizer --> Profile[(User Profile Firestore)]
-    Personalizer --> Assistant[Response Agent]
-    
-    Researcher --> Search[Web Search Tool]
-    Search --> Analyst[Legal Analyst Node]
-    Analyst --> RAG[Legal RAG Tool]
-    Analyst --> Synthesis[Synthesis Agent]
-    
-    Assistant --> Output([Personalized Response])
-    Synthesis --> Output
-```
+## 🎯 Chosen Vertical: The Indian Electoral System
+Our solution focuses specifically on the **Indian Democracy**, the largest in the world. We address the unique complexities of the **Election Commission of India (ECI)**, including:
+- **Registration**: Form 6/8, EPIC (Voter ID) details, and NVSP portal guidance.
+- **Technology**: Understanding EVMs, VVPAT verification, and NOTA.
+- **Integrity**: Real-time Fact-Checking of "WhatsApp University" forwards and rumors.
+- **Participation**: Polling booth locators and step-by-step voting guides.
 
 ---
 
-## ✨ 3. Core Features & Highlights
+## 🧠 Approach and Logic
 
-### 🕹️ EVM & VVPAT Simulator
--   **Tactile Feedback**: A hyper-realistic, industrial-grade simulator that replicates the exact look and feel of an Indian Electronic Voting Machine.
--   **VVPAT Audit Trail**: Simulates the 7-second paper slip audit trail, educating voters on how to verify their vote.
--   **Educational Mode**: Step-by-step guidance on identifying candidates, pressing the ballot button, and confirming the beep.
+### 1. Agentic AI Architecture
+Unlike standard chatbots, CivicGuide uses an **Agentic Framework**. The AI doesn't just "talk"; it "does."
+- **Researcher Agent**: Uses Google Search tools to verify real-time candidate data and constituency details.
+- **Fact-Checker Agent**: Specialized reasoning loop designed to cross-reference rumors against official ECI guidelines.
+- **Neutrality Engine**: A strict system-level constraint that prevents partisan bias while maintaining a warm, encouraging tone.
 
-### 🛡️ Candidate Affidavit Analyzer (KYC)
--   **Know Your Candidate**: Agentic analysis of candidate affidavits to extract Criminal, Financial, and Educational (CFE) data.
--   **Simplified Reports**: Transforms complex legal filings into easy-to-read, professional reports.
--   **Agentic Search**: Uses specialized nodes for research, analysis, and synthesis to ensure data accuracy.
+### 2. Semantic Caching & Throttling
+To handle the scale of an Indian election while remaining efficient:
+- **Semantic Cache**: Uses an LRU (Least Recently Used) cache to serve common questions (e.g., "How to register?") in <5ms.
+- **Rate Limiting**: Protects your API quota and infrastructure via a 20-req/min global proxy.
 
-### 🔍 Fact-Check Engine (Bento Cockpit)
--   **Multi-Agent Orchestration**: Powered by a dedicated **LangGraph** workflow that uses collaborative reasoning between Researcher and Analyst agents.
--   **Cockpit UI**: A high-fidelity, non-scrollable "Cockpit" interface designed to fit the viewport perfectly, with independent scrollable areas for deep-dive reports.
--   **Legal Grounding**: Every check is cross-referenced with the **Representation of the People Act (1951)**.
--   **Official Citations**: Direct links to ECI manuals and press notes provided for every verdict.
-
-### 🤖 Agentic AI Assistant
--   **Contextual Memory**: Remembers previous interactions within a session (**Short-term**) and user preferences across sessions (**Long-term**).
--   **Personalized Onboarding**: Tailors guidance based on the user's voter category (e.g., First-time, Senior Citizen, PWD).
--   **Streaming Responses**: Real-time AI response delivery for a snappy, interactive experience.
-
-### 🗺️ Polling Booth Finder
--   **Visual Map Integration**: Uses **Google Maps** to show precise booth locations.
--   **Official Data**: Integrated with the **Google Civic Information API** (where available) and ECI portals for official polling station details.
--   **Places Autocomplete**: Easy address searching via Google Places.
-
-### ⏳ Interactive Election Timeline
--   **8-Stage Tracker**: Visual guide from the Model Code of Conduct (MCC) to Government Formation.
--   **Actionable Tips**: Key dates and procedural tips provided for each stage.
--   **Dynamic Navigation**: "Ask AI about this stage" deep-links for immediate clarification.
-
-### 🌐 Multilingual & Inclusive
--   **6 Indian Languages**: Support for Hindi, Tamil, Telugu, Bengali, Marathi, and English.
--   **WCAG 2.1 AA**: Fully accessible with screen-reader support and high-contrast styling.
--   **AIBadge Verification**: Transparently labels AI content with links to official sources.
+### 3. Feature-Sliced Design (FSD)
+The code follows the **FSD architectural pattern**, separating logic into isolated "Features" (Assistant, EVM, Polling). This ensures 100% maintainability and prevents bug regressions.
 
 ---
 
-## 🚀 4. Google Services Integration
+## 🛠️ How the Solution Works
 
-| Service | Application |
-| :--- | :--- |
-| **Gemini 1.5 Flash** | Core reasoning, RAG, and high-speed chat orchestration via LangChain. |
-| **Firebase Auth** | Secure, one-tap login for personalized citizen profiles. |
-| **Firestore** | Real-time database for user profiles and conversation memory. |
-| **Google Maps API** | Polling booth visualization and address autocomplete. |
-| **Civic Info API** | Source of truth for official polling and candidate data. |
-| **Cloud Translation** | Real-time localization into regional Indian languages. |
-| **Cloud Run** | Scalable, containerized deployment for high election-day traffic. |
+1. **The Interactive Assistant**: A streaming chat interface that uses `gemini-2.5-flash` to provide instant, personalized electoral advice based on the user's location and interests.
+2. **EVM Simulator**: A visual interactive guide that demystifies how to use an Electronic Voting Machine and verify the VVPAT slip.
+3. **Polling Booth Locator**: Integrates **Google Maps** to help users find their exact voting location based on their address.
+4. **Rumor Verifier**: A dedicated tool where users can paste suspicious election news to get an instant, cited verdict from official sources.
 
 ---
 
-## 🛡️ 5. Security & Trust
+## ⚖️ Key Assumptions
 
--   **XSS Protection**: Robust input sanitization via `sanitizeInput()` on all user data.
--   **Rate Limiting**: 20 requests/minute per IP to prevent service abuse via `proxy.ts`.
--   **Data Privacy**: All personal context is encrypted and stored securely in Firebase.
--   **Neutrality Promise**: Hard-coded system instructions ensure absolute non-partisanship.
+1. **Official Truth**: We assume the **Election Commission of India (ECI)** is the single source of truth for all procedural facts.
+2. **Connectivity**: We assume that while India has vast internet reach, bandwidth can be unstable, so we've optimized the app for speed and lightweight performance.
+3. **Multilingual Necessity**: We assume users prefer learning about democracy in their mother tongue, implementing support for **Hindi, English, Tamil, Telugu, Bengali, and Marathi**.
+4. **Non-Partisanship**: We assume that an educational tool must never take sides, maintaining absolute neutrality across all political parties.
+
+---
+
+## 🚀 Tech Stack
+
+- **Framework**: Next.js 16.2.4 (Turbopack)
+- **AI Engine**: Google Gemini 2.5 Flash
+- **Maps**: Google Maps JS API + Places Autocomplete
+- **Auth/DB**: Firebase (Google Cloud)
+- **Deployment**: Google Cloud Run (Docker Standalone)
+- **Styling**: Tailwind CSS v4 (CSS-first)
+- **Accessibility**: WCAG 2.1 AA Compliant
 
 ---
 
-## 🏁 6. Getting Started
+## 📚 Technical Deep Dive
 
-```bash
-# Clone the repository
-git clone https://github.com/SouravSohal/electoral_assistant.git
+For judges and developers looking for more detail, explore our specialized documentation:
 
-# Install Dependencies
-npm install --legacy-peer-deps
-
-# Configure .env.local (Gemini, Firebase, Google Cloud keys)
-
-# Run Development Server
-npm run dev
-```
+- 🏗️ **[Architecture](docs/ARCHITECTURE.md)** — Feature-Sliced Design & Deployment.
+- 🧠 **[Logic & AI](docs/LOGIC.md)** — Agentic loops & Prompt strategies.
+- 🌟 **[Feature Set](docs/FEATURES.md)** — Comprehensive catalog & Social impact.
+- 📈 **[Scalability](docs/SCALABILITY.md)** — Growth roadmap & Future vision.
 
 ---
-**CivicGuide India** | Helping India Vote, One Prompt at a Time. | [voters.eci.gov.in](https://voters.eci.gov.in)
+
+
+
+**CivicGuide India — Empowering the Voter, Strengthening the Democracy.**

@@ -1,7 +1,11 @@
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
 /**
- * Factory for creating configured Gemini models for different agents.
+ * Factory for creating pre-configured Gemini models for agentic workflows.
+ * Optimized for reasoning and tool-calling with gemini-2.5-flash.
+ * 
+ * @param temperature - Controls randomness (default: 0 for high precision)
+ * @returns Configured ChatGoogleGenerativeAI instance
  */
 export function createAgentModel(temperature = 0) {
   const apiKey = process.env.GEMINI_API_KEY || "BUILD_TIME_DUMMY_KEY";
