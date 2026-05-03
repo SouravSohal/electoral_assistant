@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "Locate your polling booth for the 2026 Indian elections. Enter your address to find your designated voting station, booth number, and directions.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function PollingFinderPage() {
   // Pass the server-side API key to the client component
   // Note: For client-side Google Maps, the key is usually exposed, but we keep it
