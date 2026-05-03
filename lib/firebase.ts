@@ -34,6 +34,16 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+// Diagnostic log for production troubleshooting (safe keys only)
+if (typeof window !== "undefined") {
+  console.log("Firebase Config Status:", {
+    hasApiKey: !!firebaseConfig.apiKey,
+    projectId: firebaseConfig.projectId,
+    hasAppId: !!firebaseConfig.appId,
+    env: process.env.NODE_ENV
+  });
+}
+
 // Check for missing config in development
 if (process.env.NODE_ENV === "development") {
   const missingKeys = Object.entries(firebaseConfig)

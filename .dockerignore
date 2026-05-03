@@ -4,6 +4,7 @@ node_modules
 .git
 *.md
 .env*
+!.env.production
 !.env.example
 coverage
 __tests__
