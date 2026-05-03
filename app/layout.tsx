@@ -80,6 +80,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
+        <link rel="icon" type="image/png" href="/favicon.png" />
       </head>
       <body suppressHydrationWarning>
         <div id="google_translate_element" className="hidden" />

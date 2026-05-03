@@ -11,8 +11,12 @@ export function Footer() {
           {/* Brand & Disclaimer Column */}
           <div className="md:col-span-2 flex flex-col items-center md:items-start text-center md:text-left">
             <Link href="/" className="flex items-center gap-3 mb-6 focus-ring w-fit">
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[var(--color-brand-blue)]">
-                <Vote size={18} className="text-white" />
+              <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-white overflow-hidden">
+                <img 
+                  src="/logo.png" 
+                  alt={`${APP_NAME} Logo`} 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <span className="font-display font-semibold text-xl text-white tracking-tight">
                 {APP_NAME}

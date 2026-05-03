@@ -52,8 +52,12 @@ export function Navbar() {
             className="flex items-center gap-3 md:gap-3 group shrink-0 focus-ring"
             aria-label={`${APP_NAME} — Home`}
           >
-            <div className="flex items-center justify-center w-9 h-9 rounded-[10px] bg-gradient-to-br from-[var(--color-brand-blue)] to-[hsla(215,85%,45%,1)] shadow-sm group-hover:shadow-[0_2px_8px_hsla(215,85%,55%,0.4)] transition-all duration-300">
-              <Vote size={20} className="text-white" />
+            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-white overflow-hidden shadow-sm group-hover:shadow-[0_4px_12px_hsla(215,85%,55%,0.3)] transition-all duration-300">
+              <img 
+                src="/logo.png" 
+                alt={`${APP_NAME} Logo`} 
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="flex flex-col">
               <span className="font-display font-semibold text-lg md:text-xl text-white leading-none">
