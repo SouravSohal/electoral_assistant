@@ -28,21 +28,28 @@ export async function POST(req: NextRequest) {
       console.warn("No user profile provided for chat. Personalization will be limited.");
     }
 
-    // 3. Execute Multi-Agent Assistant
+    // 3. Execute Multi-Agent Assistant with Real Streaming
     const tId = threadId || "anonymous-default";
-    const { response } = await runAssistant(
-      null, // userId could be added if we had auth session in server
-      profile,
-      messages,
-      tId
-    );
-
-    // 4. Stream response to client (simulated for compatibility)
     const encoder = new TextEncoder();
+
     const stream = new ReadableStream({
-      start(controller) {
-        controller.enqueue(encoder.encode(response));
-        controller.close();
+      async start(controller) {
+        try {
+          await runAssistant(
+            null, // userId could be added if we had auth session in server
+            profile,
+            messages,
+            tId,
+            (token) => {
+              controller.enqueue(encoder.encode(token));
+            }
+          );
+        } catch (error: any) {
+          console.error("Stream execution error:", error);
+          controller.enqueue(encoder.encode(`\n[Error: ${error.message || "Failed to process request."}]`));
+        } finally {
+          controller.close();
+        }
       },
     });
 

@@ -51,6 +51,44 @@ export class AIEngine {
     lastRequestTime = Date.now();
   }
 
+  public static getNormalizedCacheKey(modelName: string, request: any): string {
+    try {
+      if (typeof request === "string") {
+        return `${modelName}:${request.trim().toLowerCase()}`;
+      }
+
+      if (request && typeof request === "object") {
+        const contents = request.contents || request;
+        if (Array.isArray(contents)) {
+          const serialized = contents
+            .map((content: any) => {
+              const role = content.role || "user";
+              const partsText = Array.isArray(content.parts)
+                ? content.parts
+                    .map((part: any) => {
+                      if (typeof part === "string") return part.trim().toLowerCase();
+                      if (part && typeof part === "object") {
+                        if (part.text) return part.text.trim().toLowerCase();
+                        if (part.inlineData) return "[media]";
+                        if (part.functionCall) return `call:${part.functionCall.name}`;
+                        if (part.functionResponse) return `response:${part.functionResponse.name}`;
+                      }
+                      return "";
+                    })
+                    .join(" ")
+                : "";
+              return `${role}:${partsText}`;
+            })
+            .join("|");
+          return `${modelName}:${serialized}`;
+        }
+      }
+      return `${modelName}:${JSON.stringify(request)}`;
+    } catch (e) {
+      return `${modelName}:${JSON.stringify(request)}`;
+    }
+  }
+
   /**
    * Factory method to create a pre-configured Gemini model.
    * @param config - Configuration options for the model
@@ -90,7 +128,7 @@ export class AIEngine {
     const originalGenerateContent = model.generateContent.bind(model);
     
     model.generateContent = async (request: any) => {
-      const cacheKey = `${config.modelName}:${JSON.stringify(request)}`;
+      const cacheKey = this.getNormalizedCacheKey(config.modelName, request);
       
       // Cache Lookup
       const cached = responseCache.get(cacheKey);

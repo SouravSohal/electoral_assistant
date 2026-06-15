@@ -35,7 +35,8 @@ export async function runAssistant(
   userId: string | null, 
   userProfile: UserProfile | null | undefined, 
   rawMessages: { role: string; content?: string; parts?: { text: string }[] }[],
-  threadId: string
+  threadId: string,
+  onToken?: (token: string) => void
 ) {
   // Convert raw messages to LangChain format
   const messages = rawMessages.map(msg => {
@@ -54,7 +55,10 @@ export async function runAssistant(
   };
 
   const finalState = await assistantGraph.invoke(initialState, {
-    configurable: { thread_id: threadId }
+    configurable: { 
+      thread_id: threadId,
+      onToken
+    }
   });
   
   const lastMessage = finalState.messages[finalState.messages.length - 1];
